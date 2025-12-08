@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -173,7 +173,18 @@ document.getElementById("signinForm").addEventListener("submit", function(e) {
         return showMessage("Invalid email or password!", true);
     }
 
+    // store login
     localStorage.setItem("userEmail", email);
+
+    // ADMIN LOGIN
+    if (email === "daiwicksharma@gmail.com" && password === "03/04/12") {
+        localStorage.setItem("userRole", "admin");
+        window.location.href = "admin.html";
+        return;
+    }
+
+    // CUSTOMER LOGIN
+    localStorage.setItem("userRole", "customer");
     window.location.href = "customer.html";
 });
 
@@ -182,12 +193,11 @@ function showMessage(msg, isError) {
     box.textContent = msg;
     box.className = "msg " + (isError ? "error" : "success");
 
-    setTimeout(() => {
-        box.textContent = "";
-    }, 2500);
+    setTimeout(() => { box.textContent = ""; }, 2500);
 }
 
 </script>
+
 
 </body>
 </html>
