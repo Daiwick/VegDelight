@@ -137,16 +137,14 @@
 
     <script>
         const menuItems = [
-            { id: 1, name: 'Paneer Tikka', description: 'Grilled cottage cheese marinated in aromatic spices', price: 12.99, category: 'Appetizer', image: 'https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg' },
-            { id: 2, name: 'Vegetable Samosa', description: 'Crispy pastry filled with spiced potatoes and peas', price: 5.99, category: 'Appetizer', image: 'https://images.pexels.com/photos/14477865/pexels-photo-14477865.jpeg' },
-            { id: 3, name: 'Palak Paneer', description: 'Cottage cheese cubes in creamy spinach gravy', price: 14.99, category: 'Main Course', image: 'https://images.pexels.com/photos/5410400/pexels-photo-5410400.jpeg' },
-            { id: 4, name: 'Dal Makhani', description: 'Black lentils cooked in butter and cream', price: 11.99, category: 'Main Course', image: 'https://images.pexels.com/photos/5560763/pexels-photo-5560763.jpeg' },
-            { id: 5, name: 'Vegetable Biryani', description: 'Fragrant basmati rice with mixed vegetables and spices', price: 13.99, category: 'Main Course', image: 'https://images.pexels.com/photos/12737652/pexels-photo-12737652.jpeg' },
-            { id: 6, name: 'Chana Masala', description: 'Chickpeas cooked in tangy tomato-based gravy', price: 10.99, category: 'Main Course', image: 'https://images.pexels.com/photos/6260921/pexels-photo-6260921.jpeg' },
-            { id: 7, name: 'Aloo Gobi', description: 'Potato and cauliflower curry with aromatic spices', price: 9.99, category: 'Main Course', image: 'https://images.pexels.com/photos/8753987/pexels-photo-8753987.jpeg' },
-            { id: 8, name: 'Masala Dosa', description: 'Crispy rice crepe filled with spiced potato filling', price: 8.99, category: 'Main Course', image: 'https://images.pexels.com/photos/5560763/pexels-photo-5560763.jpeg' },
-            { id: 9, name: 'Gulab Jamun', description: 'Soft milk dumplings soaked in rose-flavored syrup', price: 4.99, category: 'Dessert', image: 'https://images.pexels.com/photos/4449068/pexels-photo-4449068.jpeg' },
-            { id: 10, name: 'Mango Lassi', description: 'Refreshing yogurt drink with sweet mango', price: 3.99, category: 'Beverage', image: 'https://images.pexels.com/photos/2130378/pexels-photo-2130378.jpeg' }
+            { id: 1, name: 'Paneer Tikka', description: 'Grilled cottage cheese marinated in aromatic spices', price: 12.99, category: 'Appetizer', image: 'https://www.indianveggiedelight.com/wp-content/uploads/2021/08/air-fryer-paneer-tikka-featured.jpg' },
+            { id: 2, name: 'Vegetable Samosa', description: 'Crispy pastry filled with spiced potatoes and peas', price: 5.99, category: 'Appetizer', image: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/samosa-recipe.webp' },
+            { id: 3, name: 'Palak Paneer', description: 'Cottage cheese cubes in creamy spinach gravy', price: 14.99, category: 'Main Course', image: 'https://www.cookwithmanali.com/wp-content/uploads/2019/08/Palak-Paneer-500x500.jpg' },
+            { id: 4, name: 'Dal Makhani', description: 'Black lentils cooked in butter and cream', price: 11.99, category: 'Main Course', image: 'https://sinfullyspicy.com/wp-content/uploads/2015/03/1200-by-1200-images-1.jpg' },
+            { id: 5, name: 'Aloo Gobi', description: 'Potato and cauliflower curry with aromatic spices', price: 9.99, category: 'Main Course', image: 'https://shwetainthekitchen.com/wp-content/uploads/2024/01/aloo-gobi.jpg' },
+            { id: 6, name: 'Masala Dosa', description: 'Crispy rice crepe filled with spiced potato filling', price: 8.99, category: 'Main Course', image: 'https://www.cookwithmanali.com/wp-content/uploads/2020/05/Masala-Dosa.jpg' },
+            { id: 7, name: 'Gulab Jamun', description: 'Soft milk dumplings soaked in rose-flavored syrup', price: 4.99, category: 'Dessert', image: 'https://i0.wp.com/www.chitrasfoodbook.com/wp-content/uploads/2016/10/gulab-jamun-using-mix.jpg?w=1200&ssl=1' },
+            { id: 8, name: 'Mango Lassi', description: 'Refreshing yogurt drink with sweet mango', price: 3.99, category: 'Beverage', image: 'https://aroundtheyum.com/wp-content/uploads/2024/09/mango-lassi-recipe.jpg' }
         ];
 
         let cart = [];
@@ -154,7 +152,7 @@
 
         function initCustomer() {
             const email = localStorage.getItem('userEmail');
-            if (!email) window.location.href = "index.html";
+            if (!email) window.location.href = "login.html";
             displayMenu();
             loadCart();
         }
@@ -262,8 +260,7 @@
             window.location.href="checkout.html";
         }
 
-        function logout() { localStorage.clear(); window.location.href="login.html"; }
+        function logout() { localStorage.clear(); window.location.href="index.html"; }
     </script>
 </body>
 </html>
-
