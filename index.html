@@ -246,79 +246,87 @@
     </div>
 
     <script>
-        let isSignupMode = false;
+    let isSignupMode = false;
 
-        function toggleForm() {
-            isSignupMode = !isSignupMode;
-            const loginForm = document.getElementById('loginForm');
-            const signupForm = document.getElementById('signupForm');
-            const toggleText = document.getElementById('toggleText');
+    function toggleForm() {
+        isSignupMode = !isSignupMode;
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const toggleText = document.getElementById('toggleText');
 
-            if (isSignupMode) {
-                loginForm.classList.add('hidden');
-                signupForm.classList.remove('hidden');
-                document.querySelector('h2').textContent = 'Create Account';
-                document.querySelector('.subtitle').textContent = 'Sign up to start ordering';
-                toggleText.innerHTML = 'Already have an account? <a onclick="toggleForm()">Sign in</a>';
-            } else {
-                loginForm.classList.remove('hidden');
-                signupForm.classList.add('hidden');
-                document.querySelector('h2').textContent = 'Welcome Back';
-                document.querySelector('.subtitle').textContent = 'Sign in to your account';
-                toggleText.innerHTML = 'Don\'t have an account? <a onclick="toggleForm()">Sign up</a>';
-            }
+        if (isSignupMode) {
+            loginForm.classList.add('hidden');
+            signupForm.classList.remove('hidden');
+            document.querySelector('h2').textContent = 'Create Account';
+            document.querySelector('.subtitle').textContent = 'Sign up to start ordering';
+            toggleText.innerHTML = 'Already have an account? <a onclick="toggleForm()">Sign in</a>';
+        } else {
+            loginForm.classList.remove('hidden');
+            signupForm.classList.add('hidden');
+            document.querySelector('h2').textContent = 'Welcome Back';
+            document.querySelector('.subtitle').textContent = 'Sign in to your account';
+            toggleText.innerHTML = 'Don\'t have an account? <a onclick="toggleForm()">Sign up</a>';
         }
-
-        function handleLogin(event) {
-            event.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-
-            // Demo check
-            if (email === 'daiwicksharma@gmail.com' && password === '03/04/12') {
-                localStorage.setItem('userRole', 'admin');
-                localStorage.setItem('userEmail', email);
-                window.location.href = 'admin.html';
-            } else {
-    // Check if the user had signed up earlier
-    const savedEmail = localStorage.getItem('signupEmail');
-    const savedPassword = localStorage.getItem('signupPassword');
-
-    if (email === savedEmail && password === savedPassword) {
-        localStorage.setItem('userRole', 'customer');
-        localStorage.setItem('userEmail', email);
-        window.location.href = 'customer.html';
-    } else {
-        showError('loginError', 'Incorrect email or password');
     }
-}
 
+    function handleLogin(event) {
+        event.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        // Demo check for admin
+        if (email === 'daiwicksharma@gmail.com' && password === '03/04/12') {
+            localStorage.setItem('userRole', 'admin');
+            localStorage.setItem('userEmail', email);
+            window.location.href = 'admin.html';
+            return;
         }
 
-        function handleSignup(event) {
-            event.preventDefault();
-            const fullName = document.getElementById('fullName').value;
-            const email = document.getElementById('signupEmail').value;
+        // Check saved user
+        const savedEmail = localStorage.getItem('signupEmail');
+        const savedPassword = localStorage.getItem('signupPassword');
 
-            localStorage.setItem('signupEmail', email);
-			localStorage.setItem('signupPassword', document.getElementById('signupPassword').value);
-			localStorage.setItem('signupName', fullName);
-
-			localStorage.setItem('userRole', 'customer');
-			localStorage.setItem('userEmail', email);
-
-			window.location.href = 'customer.html';
-
+        if (email === savedEmail && password === savedPassword) {
+            localStorage.setItem('userRole', 'customer');
+            localStorage.setItem('userEmail', email);
+            window.location.href = 'customer.html';
+        } else {
+            showError('loginError', 'Incorrect email or password');
         }
+    }
 
-        function showError(elementId, message) {
-            const errorDiv = document.getElementById(elementId);
-            errorDiv.textContent = message;
-            errorDiv.classList.remove('hidden');
-            setTimeout(() => {
-                errorDiv.classList.add('hidden');
-            }, 5000);
-        }
-    </script>
+    function handleSignup(event) {
+        event.preventDefault();
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+
+        // Save user data
+        localStorage.setItem('signupName', fullName);
+        localStorage.setItem('signupEmail', email);
+        localStorage.setItem('signupPassword', password);
+
+        // Show success message
+        const signupErrorDiv = document.getElementById('signupError');
+        signupErrorDiv.textContent = '✅ Account Registered! Please sign in.';
+        signupErrorDiv.classList.remove('hidden');
+
+        // Switch back to login form after 2 seconds
+        setTimeout(() => {
+            signupErrorDiv.classList.add('hidden');
+            toggleForm(); // switches to login
+        }, 2000);
+    }
+
+    function showError(elementId, message) {
+        const errorDiv = document.getElementById(elementId);
+        errorDiv.textContent = message;
+        errorDiv.classList.remove('hidden');
+        setTimeout(() => {
+            errorDiv.classList.add('hidden');
+        }, 5000);
+    }
+</script>
+
 </body>
 </html>
