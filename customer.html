@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VegDelight - Menu</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; background: linear-gradient(to bottom right, #dcfce7, #bbf7d0); min-height:100vh; }
+        nav { background:white; box-shadow:0 1px 3px rgba(0,0,0,0.1); position:sticky; top:0; z-index:30; }
+        .nav-container { max-width:80rem; margin:0 auto; padding:0 1rem; display:flex; align-items:center; justify-content:space-between; height:4rem; }
+        .logo-section { display:flex; align-items:center; gap:.75rem; }
+        .logo-icon { background:#16a34a; padding:.5rem; border-radius:.5rem; }
+        .logo-icon svg { width:1.5rem; height:1.5rem; color:white; }
+        .logo-text h1 { font-size:1.25rem; font-weight:bold; color:#1f2937; }
+        .logo-text p { font-size:.75rem; color:#6b7280; }
+        .nav-links { display:flex; align-items:center; gap:1rem; }
+        .nav-links a, .nav-links button { padding:.5rem 1rem; border-radius:.5rem; font-weight:500; text-decoration:none; border:none; cursor:pointer; transition: all .2s; font-size:.95rem; }
+        .nav-links a.active { background:#dcfce7; color:#16a34a; }
+        .nav-links a:hover { background:#f3f4f6; }
+        .cart-btn { position:relative; background:#16a34a; color:white; padding:.5rem; border-radius:.5rem; }
+        .cart-btn:hover { background:#15803d; }
+        .cart-badge { position:absolute; top:-.5rem; right:-.5rem; background:#dc2626; color:white; font-size:.75rem; font-weight:bold; width:1.5rem; height:1.5rem; display:flex; align-items:center; justify-content:center; border-radius:50%; }
+        .logout-btn { background:transparent; color:#6b7280; padding:.5rem; }
+        .logout-btn:hover { background:#fee2e2; color:#dc2626; }
+        main { max-width:80rem; margin:0 auto; padding:2rem 1rem; }
+        .header { margin-bottom:2rem; }
+        .header h1 { font-size:2.25rem; font-weight:bold; color:#1f2937; margin-bottom:.5rem; }
+        .header p { color:#4b5563; }
+        .filters { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:2rem; align-items:center; }
+        .filter-label { font-size:.875rem; font-weight:500; color:#4b5563; }
+        .filter-btn { padding:.5rem 1.5rem; border-radius:9999px; font-weight:500; border:none; cursor:pointer; transition:all .2s; }
+        .filter-btn.active { background:#16a34a; color:white; box-shadow:0 4px 6px -1px rgba(0,0,0,.1); }
+        .filter-btn.inactive { background:white; color:#4b5563; border:1px solid #d1d5db; }
+        .filter-btn.inactive:hover { background:#f3f4f6; }
+        .menu-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:1.5rem; margin-bottom:2rem; }
+        .menu-item { background:white; border-radius:.75rem; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,.1); transition:all .2s; }
+        .menu-item:hover { box-shadow:0 10px 15px -3px rgba(0,0,0,.1); }
+        .item-image { width:100%; height:150px; background:#f3f4f6; object-fit:cover; }
+        .item-content { padding:1.25rem; }
+        .item-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:.5rem; }
+        .item-name { font-size:1.25rem; font-weight:bold; color:#1f2937; }
+        .item-price { background:#dcfce7; color:#16a34a; padding:.25rem .75rem; border-radius:9999px; font-size:.875rem; font-weight:600; }
+        .item-category { font-size:.875rem; color:#6b7280; margin-bottom:.25rem; }
+        .item-description { font-size:.875rem; color:#4b5563; margin-bottom:1rem; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+        .add-to-cart-btn { width:100%; padding:.75rem; background:#16a34a; color:white; border:none; border-radius:.5rem; font-weight:600; cursor:pointer; transition: all .2s; display:flex; align-items:center; justify-content:center; gap:.5rem; }
+        .add-to-cart-btn:hover { background:#15803d; }
+        .add-to-cart-btn.added { background:#22c55e; transform:scale(0.95); }
+        .cart-sidebar { position:fixed; right:0; top:0; height:100vh; width:100%; max-width:400px; background:white; box-shadow:-4px 0 6px -1px rgba(0,0,0,.1); z-index:40; transform:translateX(100%); transition:transform .3s; display:flex; flex-direction:column; }
+        .cart-sidebar.open { transform:translateX(0); }
+        .cart-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:35; display:none; }
+        .cart-overlay.open { display:block; }
+        .cart-header { padding:1.5rem; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:space-between; }
+        .cart-title { font-size:1.25rem; font-weight:bold; color:#1f2937; }
+        .close-btn { background:transparent; border:none; cursor:pointer; padding:.5rem; font-size:1.5rem; color:#6b7280; }
+        .cart-items { flex:1; overflow-y:auto; padding:1.5rem; }
+        .cart-item { background:#f9fafb; border-radius:.5rem; padding:1rem; margin-bottom:1rem; display:flex; gap:1rem; }
+        .cart-item-image { width:80px; height:80px; object-fit:cover; border-radius:.5rem; }
+        .cart-item-details { flex:1; }
+        .cart-item-name { font-weight:600; color:#1f2937; margin-bottom:.25rem; }
+        .cart-item-price { font-size:.875rem; color:#6b7280; margin-bottom:.5rem; }
+        .quantity-controls { display:flex; align-items:center; gap:.5rem; }
+        .qty-btn { background:white; border:1px solid #d1d5db; cursor:pointer; padding:.25rem .5rem; border-radius:.25rem; font-size:.875rem; }
+        .qty-btn:hover { background:#f3f4f6; }
+        .qty-display { font-weight:600; min-width:2rem; text-align:center; }
+        .remove-btn { background:transparent; border:none; color:#dc2626; cursor:pointer; font-size:1rem; }
+        .cart-footer { border-top:1px solid #e5e7eb; padding:1.5rem; background:#f9fafb; }
+        .cart-total { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
+        .total-label { font-size:1.125rem; font-weight:600; color:#4b5563; }
+        .total-amount { font-size:1.5rem; font-weight:bold; color:#16a34a; }
+        .checkout-btn { width:100%; background:#16a34a; color:white; padding:1rem; border-radius:.5rem; font-weight:600; border:none; cursor:pointer; }
+        .checkout-btn:hover { background:#15803d; }
+        .empty-cart { text-align:center; padding:2rem; color:#6b7280; }
+        @media (max-width:768px) { .menu-grid { grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); } .cart-sidebar { max-width:100%; } }
+    </style>
+</head>
+<body onload="initCustomer()">
+    <nav>
+        <div class="nav-container">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <h1>VegDelight</h1>
+                    <p>Fresh Vegetarian Food</p>
+                </div>
+            </div>
+
+            <div class="nav-links">
+                <a href="customer.html" class="active">Menu</a>
+                <a href="customer.html">Orders</a>
+                <button class="cart-btn" onclick="toggleCart()">
+                    🛒
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+                <button class="logout-btn" onclick="logout()" title="Sign Out">🚪</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="header">
+            <h1>Our Menu</h1>
+            <p>Fresh vegetarian dishes made with love</p>
+        </div>
+
+        <div class="filters">
+            <span class="filter-label">Filter:</span>
+            <button class="filter-btn active" onclick="filterMenu('All')">All</button>
+            <button class="filter-btn inactive" onclick="filterMenu('Appetizer')">Appetizer</button>
+            <button class="filter-btn inactive" onclick="filterMenu('Main Course')">Main Course</button>
+            <button class="filter-btn inactive" onclick="filterMenu('Dessert')">Dessert</button>
+            <button class="filter-btn inactive" onclick="filterMenu('Beverage')">Beverage</button>
+        </div>
+
+        <div class="menu-grid" id="menuGrid"></div>
+    </main>
+
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <span class="cart-title">Your Cart</span>
+            <button class="close-btn" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span class="total-label">Total</span>
+                <span class="total-amount" id="totalAmount">$0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="goToCheckout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        const menuItems = [
+            { id: 1, name: 'Paneer Tikka', description: 'Grilled cottage cheese marinated in aromatic spices', price: 12.99, category: 'Appetizer', image: 'https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg' },
+            { id: 2, name: 'Vegetable Samosa', description: 'Crispy pastry filled with spiced potatoes and peas', price: 5.99, category: 'Appetizer', image: 'https://images.pexels.com/photos/14477865/pexels-photo-14477865.jpeg' },
+            { id: 3, name: 'Palak Paneer', description: 'Cottage cheese cubes in creamy spinach gravy', price: 14.99, category: 'Main Course', image: 'https://images.pexels.com/photos/5410400/pexels-photo-5410400.jpeg' },
+            { id: 4, name: 'Dal Makhani', description: 'Black lentils cooked in butter and cream', price: 11.99, category: 'Main Course', image: 'https://images.pexels.com/photos/5560763/pexels-photo-5560763.jpeg' },
+            { id: 5, name: 'Vegetable Biryani', description: 'Fragrant basmati rice with mixed vegetables and spices', price: 13.99, category: 'Main Course', image: 'https://images.pexels.com/photos/12737652/pexels-photo-12737652.jpeg' },
+            { id: 6, name: 'Chana Masala', description: 'Chickpeas cooked in tangy tomato-based gravy', price: 10.99, category: 'Main Course', image: 'https://images.pexels.com/photos/6260921/pexels-photo-6260921.jpeg' },
+            { id: 7, name: 'Aloo Gobi', description: 'Potato and cauliflower curry with aromatic spices', price: 9.99, category: 'Main Course', image: 'https://images.pexels.com/photos/8753987/pexels-photo-8753987.jpeg' },
+            { id: 8, name: 'Masala Dosa', description: 'Crispy rice crepe filled with spiced potato filling', price: 8.99, category: 'Main Course', image: 'https://images.pexels.com/photos/5560763/pexels-photo-5560763.jpeg' },
+            { id: 9, name: 'Gulab Jamun', description: 'Soft milk dumplings soaked in rose-flavored syrup', price: 4.99, category: 'Dessert', image: 'https://images.pexels.com/photos/4449068/pexels-photo-4449068.jpeg' },
+            { id: 10, name: 'Mango Lassi', description: 'Refreshing yogurt drink with sweet mango', price: 3.99, category: 'Beverage', image: 'https://images.pexels.com/photos/2130378/pexels-photo-2130378.jpeg' }
+        ];
+
+        let cart = [];
+        let currentFilter = "All";
+
+        function initCustomer() {
+            const email = localStorage.getItem('userEmail');
+            if (!email) window.location.href = "login.html";
+            displayMenu();
+            loadCart();
+        }
+
+        function displayMenu() {
+            const filtered = currentFilter === "All" ? menuItems : menuItems.filter(i => i.category === currentFilter);
+            document.getElementById('menuGrid').innerHTML = filtered.map(item => `
+                <div class="menu-item">
+                    <img src="${item.image}" class="item-image" onerror="this.src='https://via.placeholder.com/300x200'">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">${item.name}</div>
+                            <span class="item-price">$${item.price.toFixed(2)}</span>
+                        </div>
+                        <div class="item-category">${item.category}</div>
+                        <p class="item-description">${item.description}</p>
+                        <button class="add-to-cart-btn" onclick="addToCart(${item.id}, this)">➕ Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterMenu(category) {
+            currentFilter = category;
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                btn.classList.toggle("active", btn.textContent === category);
+                btn.classList.toggle("inactive", btn.textContent !== category);
+            });
+            displayMenu();
+        }
+
+        function addToCart(id, btn) {
+            const item = menuItems.find(m => m.id === id);
+            const exists = cart.find(c => c.id === id);
+            if (exists) exists.quantity++; else cart.push({...item, quantity:1});
+            saveCart();
+            updateCartUI();
+
+            // Animation for button
+            btn.classList.add('added');
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Added';
+            setTimeout(() => {
+                btn.classList.remove('added');
+                btn.textContent = originalText;
+            }, 1000);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(i => i.id !== id);
+            saveCart();
+            updateCartUI();
+        }
+
+        function updateQuantity(id, qty) {
+            const item = cart.find(c => c.id === id);
+            if (!item) return;
+            item.quantity = qty;
+            if (item.quantity <= 0) removeFromCart(id);
+            saveCart();
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartItems = document.getElementById('cartItems');
+            const totalAmount = document.getElementById('totalAmount');
+            const cartCount = document.getElementById('cartCount');
+            cartCount.textContent = cart.reduce((s,i)=>s+i.quantity,0);
+            if(cart.length===0) { cartItems.innerHTML=`<div class="empty-cart">Your cart is empty</div>`; totalAmount.textContent="$0.00"; return; }
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <img src="${item.image}" class="cart-item-image">
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, ${item.quantity-1})">−</button>
+                            <span class="qty-display">${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, ${item.quantity+1})">+</button>
+                            <span style="margin-left:auto;font-weight:600;color:#16a34a;">$${(item.price*item.quantity).toFixed(2)}</span>
+                            <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            const total = cart.reduce((s,i)=>s+i.price*i.quantity,0);
+            totalAmount.textContent="$"+total.toFixed(2);
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('open');
+            document.getElementById('cartOverlay').classList.toggle('open');
+        }
+
+        function saveCart() { localStorage.setItem("cart", JSON.stringify(cart)); }
+        function loadCart() { const saved = localStorage.getItem("cart"); cart = saved ? JSON.parse(saved) : []; updateCartUI(); }
+
+        function goToCheckout() {
+            if(cart.length===0){ alert("Your cart is empty!"); return; }
+            let orders = JSON.parse(localStorage.getItem("orders")) || [];
+            const email = localStorage.getItem("userEmail");
+            const newOrder = { id:Date.now().toString(), status:"pending", total_amount:cart.reduce((s,i)=>s+i.price*i.quantity,0), customer_name:email.split("@")[0], customer_email:email, delivery_address:"Not Provided Yet", phone_number:"Not Provided Yet", created_at:new Date().toISOString(), order_items:cart.map(i=>({id:i.id,item_name:i.name,quantity:i.quantity,price:i.price})) };
+            orders.push(newOrder);
+            localStorage.setItem("orders",JSON.stringify(orders));
+            window.location.href="checkout.html";
+        }
+
+        function logout() { localStorage.clear(); window.location.href="login.html"; }
+    </script>
+</body>
+</html>
