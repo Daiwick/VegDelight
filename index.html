@@ -5,327 +5,188 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VegDelight - Login</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: Arial, sans-serif;
             background: linear-gradient(to bottom right, #dcfce7, #bbf7d0);
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
-            padding: 1rem;
+            align-items: center;
         }
-
         .container {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            background: #fff;
             padding: 2rem;
-            width: 100%;
-            max-width: 28rem;
+            width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: fadeIn .6s ease;
         }
 
-        .header {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .logo {
-            background: #16a34a;
-            padding: 0.75rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo svg {
-            width: 2rem;
-            height: 2rem;
-            color: white;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         h2 {
-            font-size: 1.875rem;
-            font-weight: bold;
-            text-align: center;
-            color: #1f2937;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #4b5563;
-            margin-bottom: 2rem;
-            font-size: 0.875rem;
-        }
-
-        .form-group {
             margin-bottom: 1rem;
-        }
-
-        label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #374151;
-            margin-bottom: 0.25rem;
-        }
-
-        input[type="email"],
-        input[type="password"],
-        input[type="text"] {
-            width: 100%;
-            padding: 0.5rem 1rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-
-        input[type="email"]:focus,
-        input[type="password"]:focus,
-        input[type="text"]:focus {
-            outline: none;
-            ring: 2px;
-            ring-color: #16a34a;
-            border-color: transparent;
-            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: #16a34a;
-            color: white;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            margin-top: 1rem;
-            font-size: 1rem;
-            transition: background 0.2s;
-        }
-
-        .submit-btn:hover {
-            background: #15803d;
-        }
-
-        .toggle-auth {
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-
-        .toggle-auth a {
-            color: #16a34a;
-            text-decoration: none;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .toggle-auth a:hover {
-            color: #15803d;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .form-container {
-            transition: opacity 0.3s;
-        }
-
-        .error-message {
-            background: #fee2e2;
-            border: 1px solid #fecaca;
-            color: #dc2626;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
-        }
-
-        .success-message {
-            background: #dcfce7;
-            border: 1px solid #bbf7d0;
-            color: #16a34a;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
-        }
-
-        .demo-credentials {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-top: 1.5rem;
-            font-size: 0.875rem;
             color: #166534;
         }
 
-        .demo-credentials strong {
-            display: block;
-            margin-bottom: 0.5rem;
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+        .tab {
+            flex: 1;
+            padding: .75rem;
+            cursor: pointer;
+            background: #f3f4f6;
+            border-radius: 5px;
+            font-weight: 600;
+            color: #374151;
+            transition: .2s;
+        }
+        .tab.active {
+            background: #16a34a;
+            color: white;
         }
 
-        .demo-credentials p {
-            margin: 0.25rem 0;
+        input {
+            width: 100%;
+            margin: .6rem 0;
+            padding: .75rem;
+            border-radius: 5px;
+            border: 1px solid #d1d5db;
+            font-size: 1rem;
         }
 
-        @media (max-width: 640px) {
-            .container {
-                padding: 1.5rem;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
+        input:focus {
+            border-color: #16a34a;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(22,163,74,0.2);
         }
+
+        button {
+            width: 100%;
+            padding: .9rem;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: .75rem;
+            transition: .2s;
+        }
+
+        button:hover { background: #15803d; }
+
+        .hidden { display: none; }
+
+        .msg {
+            margin-top: 1rem;
+            font-size: .9rem;
+            font-weight: 600;
+        }
+        .success { color: #16a34a; }
+        .error { color: #dc2626; }
     </style>
 </head>
+
 <body>
+
     <div class="container">
-        <div class="header">
-            <div class="logo">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
-                </svg>
-            </div>
+        <h2>VegDelight Login</h2>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('signin')">Sign In</div>
+            <div class="tab" onclick="switchTab('signup')">Sign Up</div>
         </div>
 
-        <h2>Welcome Back</h2>
-        <p class="subtitle">Sign in to your account</p>
+        <!-- SIGN IN FORM -->
+        <form id="signinForm">
+            <input type="email" id="signinEmail" placeholder="Email" required>
+            <input type="password" id="signinPassword" placeholder="Password" required>
+            <button type="submit">Sign In</button>
+        </form>
 
-        <div id="loginForm" class="form-container">
-            <div id="loginError" class="error-message hidden"></div>
-            <form onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" placeholder="your@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="submit-btn">Sign In</button>
-            </form>
-        </div>
+        <!-- SIGN UP FORM -->
+        <form id="signupForm" class="hidden">
+            <input type="email" id="signupEmail" placeholder="Email" required>
+            <input type="password" id="signupPassword" placeholder="Password" required>
+            <button type="submit">Create Account</button>
+        </form>
 
-        <div id="signupForm" class="form-container hidden">
-            <div id="signupError" class="error-message hidden"></div>
-            <form onsubmit="handleSignup(event)">
-                <div class="form-group">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" placeholder="John Doe" required>
-                </div>
-                <div class="form-group">
-                    <label for="signupEmail">Email</label>
-                    <input type="email" id="signupEmail" placeholder="your@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="signupPassword">Password</label>
-                    <input type="password" id="signupPassword" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="submit-btn">Sign Up</button>
-            </form>
-        </div>
+        <div id="message" class="msg"></div>
 
-        <div class="toggle-auth">
-            <span id="toggleText">Don't have an account? <a onclick="toggleForm()">Sign up</a></span>
-        </div>
-
-       
     </div>
 
-    <script>
-    let isSignupMode = false;
+<script>
 
-    function toggleForm() {
-        isSignupMode = !isSignupMode;
-        const loginForm = document.getElementById('loginForm');
-        const signupForm = document.getElementById('signupForm');
-        const toggleText = document.getElementById('toggleText');
+function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    if (tab === 'signin') {
+        document.querySelectorAll('.tab')[0].classList.add('active');
+        document.getElementById('signinForm').classList.remove('hidden');
+        document.getElementById('signupForm').classList.add('hidden');
+    } else {
+        document.querySelectorAll('.tab')[1].classList.add('active');
+        document.getElementById('signupForm').classList.remove('hidden');
+        document.getElementById('signinForm').classList.add('hidden');
+    }
+}
 
-        if (isSignupMode) {
-            loginForm.classList.add('hidden');
-            signupForm.classList.remove('hidden');
-            document.querySelector('h2').textContent = 'Create Account';
-            document.querySelector('.subtitle').textContent = 'Sign up to start ordering';
-            toggleText.innerHTML = 'Already have an account? <a onclick="toggleForm()">Sign in</a>';
-        } else {
-            loginForm.classList.remove('hidden');
-            signupForm.classList.add('hidden');
-            document.querySelector('h2').textContent = 'Welcome Back';
-            document.querySelector('.subtitle').textContent = 'Sign in to your account';
-            toggleText.innerHTML = 'Don\'t have an account? <a onclick="toggleForm()">Sign up</a>';
-        }
+document.getElementById("signupForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById("signupEmail").value.trim();
+    const password = document.getElementById("signupPassword").value;
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    if (users.find(u => u.email === email)) {
+        return showMessage("Account already exists!", true);
     }
 
-    function handleLogin(event) {
-        event.preventDefault();
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
+    users.push({ email, password });
+    localStorage.setItem("users", JSON.stringify(users));
 
-        // Demo check for admin
-        if (email === 'daiwicksharma@gmail.com' && password === '03/04/12') {
-            localStorage.setItem('userRole', 'admin');
-            localStorage.setItem('userEmail', email);
-            window.location.href = 'admin.html';
-            return;
-        }
+    showMessage("Account Registered!", false);
 
-        // Check saved user
-        const savedEmail = localStorage.getItem('signupEmail');
-        const savedPassword = localStorage.getItem('signupPassword');
+    switchTab('signin');
+});
 
-        if (email === savedEmail && password === savedPassword) {
-            localStorage.setItem('userRole', 'customer');
-            localStorage.setItem('userEmail', email);
-            window.location.href = 'customer.html';
-        } else {
-            showError('loginError', 'Incorrect email or password');
-        }
+document.getElementById("signinForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById("signinEmail").value.trim();
+    const password = document.getElementById("signinPassword").value;
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const user = users.find(u => u.email === email && u.password === password);
+
+    if (!user) {
+        return showMessage("Invalid email or password!", true);
     }
 
-    function handleSignup(event) {
-        event.preventDefault();
-        const fullName = document.getElementById('fullName').value;
-        const email = document.getElementById('signupEmail').value;
-        const password = document.getElementById('signupPassword').value;
+    localStorage.setItem("userEmail", email);
+    window.location.href = "customer.html";
+});
 
-        // Save user data
-        localStorage.setItem('signupName', fullName);
-        localStorage.setItem('signupEmail', email);
-        localStorage.setItem('signupPassword', password);
+function showMessage(msg, isError) {
+    const box = document.getElementById("message");
+    box.textContent = msg;
+    box.className = "msg " + (isError ? "error" : "success");
 
-        // Show success message
-        const signupErrorDiv = document.getElementById('signupError');
-        signupErrorDiv.textContent = '✅ Account Registered! Please sign in.';
-        signupErrorDiv.classList.remove('hidden');
+    setTimeout(() => {
+        box.textContent = "";
+    }, 2500);
+}
 
-        // Switch back to login form after 2 seconds
-        setTimeout(() => {
-            signupErrorDiv.classList.add('hidden');
-            toggleForm(); // switches to login
-        }, 2000);
-    }
-
-    function showError(elementId, message) {
-        const errorDiv = document.getElementById(elementId);
-        errorDiv.textContent = message;
-        errorDiv.classList.remove('hidden');
-        setTimeout(() => {
-            errorDiv.classList.add('hidden');
-        }, 5000);
-    }
 </script>
 
 </body>
