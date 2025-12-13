@@ -519,163 +519,213 @@
         <div class="orders-grid" id="ordersContainer"></div>
     </main>
 
-   <script>
-    let orders = [];
-    let currentFilter = 'all';
+   <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    getDocs,
+    updateDoc,
+    deleteDoc,
+    doc,
+    query,
+    orderBy
+  } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-    function initAdmin() {
-        const userEmail = localStorage.getItem('userEmail');
-        const userRole = localStorage.getItem('userRole');
+  const firebaseConfig = {
+    apiKey: "AIzaSyBXsEzzDtXO3nuNaCnqerAGEzrZqFVbB4U",
+    authDomain: "dvegdelight.firebaseapp.com",
+    projectId: "dvegdelight",
+    storageBucket: "dvegdelight.firebasestorage.app",
+    messagingSenderId: "184865686236",
+    appId: "1:184865686236:web:560c5b038cb1584e9caa19"
+  };
 
-        // Redirect if not admin
-        if (!userEmail || userRole !== 'admin') {
-            window.location.href = 'index.html';
-            return;
-        }
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-        document.getElementById('adminName').textContent = userEmail.split('@')[0];
+  let orders = [];
+  let currentFilter = "all";
 
-        // Load REAL orders only
-        orders = JSON.parse(localStorage.getItem('orders')) || [];
+  window.initAdmin = async function () {
+    const role = localStorage.getItem("userRole");
+    const email = localStorage.getItem("userEmail");
 
-        displayOrders();
-        updateStats();
+    if (role !== "admin") {
+      window.location.href = "index.html";
+      return;
     }
 
-    function displayOrders() {
-        const filtered = currentFilter === 'all'
-            ? orders
-            : orders.filter(order => order.status === currentFilter);
+    document.getElementById("adminName").textContent = email
+      ? email.split("@")[0]
+      : "Admin";
 
-        const container = document.getElementById('ordersContainer');
+    await loadOrders();
+  };
 
-        if (filtered.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-state-icon">📦</div>
-                    <p>No orders found</p>
-                </div>`;
-            return;
-        }
+  async function loadOrders() {
+    const q = query(collection(db, "orders"), orderBy("created_at", "desc"));
+    const snapshot = await getDocs(q);
 
-        container.innerHTML = filtered.map(order => `
-            <div class="order-card">
-                <div class="order-header">
-                    <div class="order-top">
-                        <div class="order-id-section">
-                            <div class="order-id-label">Order ID</div>
-                            <div class="order-id">${order.id}</div>
-                            <div class="order-date">Placed on ${new Date(order.created_at).toLocaleString()}</div>
-                        </div>
-                        <div>
-                            <span class="status-badge ${getStatusClass(order.status)}">
-                                ${getStatusIcon(order.status)} ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                            </span>
-                        </div>
-                    </div>
+    orders = snapshot.docs.map(d => ({
+      id: d.id,
+      ...d.data()
+    }));
 
-                    <div style="text-align: right;">
-                        <div style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.25rem;">Total Amount</div>
-                        <div class="order-amount">$${order.total_amount.toFixed(2)}</div>
-                    </div>
+    displayOrders();
+    updateStats();
+  }
 
-                    <div class="order-details">
-                        <div class="detail-group">
-                            <div class="detail-label">Customer</div>
-                            <div class="detail-value">${order.customer_name}</div>
-                            <div class="detail-value" style="color: #4b5563; font-weight: 400;">${order.customer_email}</div>
-                            <div class="detail-value" style="color: #4b5563; font-weight: 400;">${order.phone_number}</div>
-                        </div>
+  window.updateStatus = async function (orderId, status) {
+    await updateDoc(doc(db, "orders", orderId), { status });
+    await loadOrders();
+  };
 
-                        <div class="detail-group">
-                            <div class="detail-label">Delivery Address</div>
-                            <div class="detail-value">${order.delivery_address}</div>
-                        </div>
-                    </div>
+  window.deleteOrder = async function (orderId) {
+    if (!confirm("Delete this order?")) return;
+    await deleteDoc(doc(db, "orders", orderId));
+    await loadOrders();
+  };
 
-                    <div class="order-actions">
-                        <button class="status-btn btn-pending" onclick="updateStatus('${order.id}', 'pending')" ${order.status === 'pending' ? 'disabled' : ''}>Mark Pending</button>
-                        <button class="status-btn btn-preparing" onclick="updateStatus('${order.id}', 'preparing')" ${order.status === 'preparing' ? 'disabled' : ''}>Mark Preparing</button>
-                        <button class="status-btn btn-delivered" onclick="updateStatus('${order.id}', 'delivered')" ${order.status === 'delivered' ? 'disabled' : ''}>Mark Delivered</button>
-                        <button class="status-btn btn-cancelled" onclick="updateStatus('${order.id}', 'cancelled')" ${order.status === 'cancelled' ? 'disabled' : ''}>Cancel Order</button>
-                        <button class="status-btn btn-cancelled" onclick="deleteOrder('${order.id}')">🗑 Delete</button>
-                    </div>
-                </div>
+  window.filterOrders = function (filter) {
+    currentFilter = filter;
 
-                <div class="order-body">
-                    <div class="items-label">Order Items</div>
-                    ${order.order_items.map(item => `
-                        <div class="order-item">
-                            <div class="item-details">
-                                <div class="item-name">${item.item_name}</div>
-                                <div class="item-qty">$${item.price.toFixed(2)} × ${item.quantity}</div>
-                            </div>
-                            <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
-                        </div>
-                    `).join('')}
-                </div>
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.classList.toggle(
+        "active",
+        btn.textContent.toLowerCase().includes(filter) ||
+        (filter === "all" && btn.textContent === "All")
+      );
+      btn.classList.toggle(
+        "inactive",
+        !(
+          btn.textContent.toLowerCase().includes(filter) ||
+          (filter === "all" && btn.textContent === "All")
+        )
+      );
+    });
+
+    displayOrders();
+  };
+
+  function displayOrders() {
+    const filtered =
+      currentFilter === "all"
+        ? orders
+        : orders.filter(o => o.status === currentFilter);
+
+    const container = document.getElementById("ordersContainer");
+
+    if (!filtered.length) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">📦</div>
+          <p>No orders found</p>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = filtered.map(order => `
+      <div class="order-card">
+        <div class="order-header">
+          <div class="order-top">
+            <div class="order-id-section">
+              <div class="order-id-label">Order ID</div>
+              <div class="order-id">${order.id}</div>
+              <div class="order-date">
+                ${order.created_at?.toDate
+                  ? "Placed on " + order.created_at.toDate().toLocaleString()
+                  : ""}
+              </div>
             </div>
-        `).join('');
-    }
 
-    function getStatusIcon(status) {
-        switch(status) {
-            case 'pending': return '⏱️';
-            case 'preparing': return '🍳';
-            case 'delivered': return '✅';
-            case 'cancelled': return '❌';
-            default: return '📦';
-        }
-    }
+            <span class="status-badge status-${order.status}">
+              ${order.status.toUpperCase()}
+            </span>
+          </div>
 
-    function getStatusClass(status) {
-        return `status-${status}`;
-    }
+          <div style="text-align:right;margin-bottom:1rem;">
+            <div style="color:#6b7280;font-size:.875rem;">Total Amount</div>
+            <div class="order-amount">$${order.total_amount.toFixed(2)}</div>
+          </div>
 
-    function filterOrders(filter) {
-        currentFilter = filter;
+          <div class="order-details">
+            <div class="detail-group">
+              <div class="detail-label">Customer</div>
+              <div class="detail-value">${order.customer_name}</div>
+              <div class="detail-value" style="font-weight:400;color:#4b5563;">
+                ${order.customer_email}
+              </div>
+              <div class="detail-value" style="font-weight:400;color:#4b5563;">
+                ${order.phone_number}
+              </div>
+            </div>
 
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.textContent.toLowerCase().includes(filter) || (filter === 'all' && btn.textContent === 'All'));
-            btn.classList.toggle('inactive', !(btn.textContent.toLowerCase().includes(filter) || (filter === 'all' && btn.textContent === 'All')));
-        });
+            <div class="detail-group">
+              <div class="detail-label">Delivery Address</div>
+              <div class="detail-value">${order.delivery_address}</div>
+            </div>
+          </div>
 
-        displayOrders();
-    }
+          <div class="order-actions">
+            <button class="status-btn btn-pending"
+              onclick="updateStatus('${order.id}','pending')"
+              ${order.status === "pending" ? "disabled" : ""}>
+              Pending
+            </button>
+            <button class="status-btn btn-preparing"
+              onclick="updateStatus('${order.id}','preparing')"
+              ${order.status === "preparing" ? "disabled" : ""}>
+              Preparing
+            </button>
+            <button class="status-btn btn-delivered"
+              onclick="updateStatus('${order.id}','delivered')"
+              ${order.status === "delivered" ? "disabled" : ""}>
+              Delivered
+            </button>
+            <button class="status-btn btn-cancelled"
+              onclick="deleteOrder('${order.id}')">
+              🗑 Delete
+            </button>
+          </div>
+        </div>
 
-    function updateStatus(orderId, status) {
-        const order = orders.find(o => o.id === orderId);
-        if (order) {
-            order.status = status;
-            localStorage.setItem('orders', JSON.stringify(orders));
-            displayOrders();
-            updateStats();
-        }
-    }
+        <div class="order-body">
+          <div class="items-label">Order Items</div>
+          ${order.order_items.map(item => `
+            <div class="order-item">
+              <div>
+                <div class="item-name">${item.item_name}</div>
+                <div class="item-qty">
+                  $${item.price.toFixed(2)} × ${item.quantity}
+                </div>
+              </div>
+              <div class="item-price">
+                $${(item.price * item.quantity).toFixed(2)}
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `).join("");
+  }
 
-    function deleteOrder(orderId) {
-        orders = orders.filter(o => o.id !== orderId);
-        localStorage.setItem('orders', JSON.stringify(orders));
-        displayOrders();
-        updateStats();
-    }
+  function updateStats() {
+    document.getElementById("totalOrders").textContent = orders.length;
+    document.getElementById("pendingOrders").textContent =
+      orders.filter(o => o.status === "pending").length;
+    document.getElementById("preparingOrders").textContent =
+      orders.filter(o => o.status === "preparing").length;
+    document.getElementById("deliveredOrders").textContent =
+      orders.filter(o => o.status === "delivered").length;
+  }
 
-    function updateStats() {
-        document.getElementById('totalOrders').textContent = orders.length;
-        document.getElementById('pendingOrders').textContent = orders.filter(o => o.status === 'pending').length;
-        document.getElementById('preparingOrders').textContent = orders.filter(o => o.status === 'preparing').length;
-        document.getElementById('deliveredOrders').textContent = orders.filter(o => o.status === 'delivered').length;
-    }
-
-    function loadOrders() {
-        console.log('Orders refreshed');
-    }
-
-    function logout() {
-        localStorage.clear();
-        window.location.href = 'login.html';
-    }
+  window.logout = function () {
+    localStorage.clear();
+    window.location.href = "index.html";
+  };
 </script>
+
 
 </body>
 </html>
