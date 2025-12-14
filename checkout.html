@@ -1,230 +1,585 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VegDelight - Checkout</title>
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; background: linear-gradient(to bottom right, #dcfce7, #bbf7d0); min-height:100vh; }
-        nav { background:white; box-shadow:0 1px 3px rgba(0,0,0,0.1); padding:1rem; }
-        .nav-container { max-width:80rem; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
-        .logo-section { display:flex; align-items:center; gap:0.75rem; }
-        .logo-icon { background:#16a34a; padding:0.5rem; border-radius:0.5rem; }
-        .logo-icon svg { width:1.5rem; height:1.5rem; color:white; }
-        .logo-text h1 { font-size:1.25rem; font-weight:bold; color:#1f2937; }
-        main { max-width:80rem; margin:0 auto; padding:2rem 1rem; }
-        .back-btn { display:flex; align-items:center; gap:0.5rem; color:#4b5563; text-decoration:none; font-weight:500; margin-bottom:1.5rem; background:transparent; border:none; cursor:pointer; font-size:1rem; }
-        .back-btn:hover { color:#1f2937; }
-        .container { display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
-        .form-section h2, .summary-section h2 { font-size:1.5rem; font-weight:bold; color:#1f2937; margin-bottom:1.5rem; }
-        .form-group { margin-bottom:1rem; }
-        label { display:block; font-size:0.875rem; font-weight:500; color:#374151; margin-bottom:0.5rem; }
-        input, textarea { width:100%; padding:0.75rem; border:1px solid #d1d5db; border-radius:0.5rem; font-size:1rem; transition:all 0.2s; }
-        input:focus, textarea:focus { outline:none; border-color:#16a34a; box-shadow:0 0 0 3px rgba(22,163,74,0.1); }
-        textarea { resize:vertical; min-height:100px; }
-        .submit-btn { width:100%; background:#16a34a; color:white; padding:1rem; border-radius:0.5rem; font-weight:600; border:none; cursor:pointer; font-size:1rem; margin-top:1.5rem; transition:background 0.2s; }
-        .submit-btn:hover { background:#15803d; }
-        .summary-box { background:#f9fafb; border-radius:0.75rem; padding:1.5rem; }
-        .summary-item { display:flex; justify-content:space-between; margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px solid #e5e7eb; }
-        .item-name { font-weight:500; color:#1f2937; }
-        .item-qty { font-size:0.875rem; color:#6b7280; }
-        .item-total { font-weight:600; color:#1f2937; }
-        .summary-total { display:flex; justify-content:space-between; align-items:center; padding-top:1rem; margin-top:1rem; border-top:2px solid #16a34a; }
-        .total-label { font-size:1.125rem; font-weight:600; color:#4b5563; }
-        .total-amount { font-size:2rem; font-weight:bold; color:#16a34a; }
-        .success-message { background:white; border-radius:1rem; padding:3rem; text-align:center; display:none; }
-        .success-message.show { display:block; }
-        .success-icon { font-size:4rem; margin-bottom:1rem; }
-        .order-id-display { font-family:monospace; font-size:0.875rem; color:#6b7280; margin-bottom:2rem; }
-        .form-container { display:block; }
-        .form-container.hide { display:none; }
-        @media (max-width:768px) { .container { grid-template-columns:1fr; } }
-    </style>
-</head>
-<body onload="initCheckout()">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VegDelight – Menu</title>
 
-    <nav>
-        <div class="nav-container">
-            <div class="logo-section">
-                <div class="logo-icon">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
-                </svg>
-                </div>
-                <div class="logo-text"><h1>VegDelight</h1></div>
-            </div>
-        </div>
-    </nav>
-
-    <main>
-        <button class="back-btn" onclick="goBack()">← Back to Cart</button>
-
-        <div class="form-container" id="formContainer">
-            <div class="container">
-                <div class="form-section">
-                    <h2>Delivery Details</h2>
-                    <form onsubmit="handleCheckout(event)">
-                        <div class="form-group">
-                            <label for="customerName">Full Name</label>
-                            <input type="text" id="customerName" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="customerEmail">Email</label>
-                            <input type="email" id="customerEmail" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="phoneNumber">Phone Number</label>
-                            <input type="tel" id="phoneNumber" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="deliveryAddress">Delivery Address</label>
-                            <textarea id="deliveryAddress" required></textarea>
-                        </div>
-
-                        <button type="submit" class="submit-btn">Place Order</button>
-                    </form>
-                </div>
-
-                <div class="summary-section">
-                    <h2>Order Summary</h2>
-                    <div class="summary-box">
-                        <div id="summaryItems"></div>
-                        <div class="summary-total">
-                            <span class="total-label">Total Amount</span>
-                            <span class="total-amount" id="totalAmount">₹0.00</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="success-message" id="successMessage">
-            <div class="success-icon">✅</div>
-            <h2>Order Placed Successfully!</h2>
-            <p>Thank you for your order</p>
-            <div class="order-id-display">Order ID: <span id="orderId"></span></div>
-            <p>Your delicious food is being prepared and will be delivered soon.</p>
-            <button class="submit-btn" onclick="goToMenu()">Back to Menu</button>
-        </div>
-    </main>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-
-/* Firebase */
-const firebaseConfig = {
-  apiKey: "AIzaSyBXsEzzDtXO3nuNaCnqerAGEzrZqFVbB4U",
-  authDomain: "dvegdelight.firebaseapp.com",
-  projectId: "dvegdelight",
-  storageBucket: "dvegdelight.firebasestorage.app",
-  messagingSenderId: "184865686236",
-  appId: "1:184865686236:web:560c5b038cb1584e9caa19"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-/* Cart */
-let cart = [];
-
-/* Init */
-window.initCheckout = function () {
-  const email = localStorage.getItem("userEmail");
-  if (!email) {
-    location.href = "login.html";
-    return;
-  }
-
-  const savedCart = localStorage.getItem("cart");
-  if (!savedCart) {
-    alert("Your cart is empty");
-    location.href = "customer.html";
-    return;
-  }
-
-  cart = JSON.parse(savedCart);
-  if (!cart.length) {
-    alert("Your cart is empty");
-    location.href = "customer.html";
-    return;
-  }
-
-  document.getElementById("customerEmail").value = email;
-  renderSummary();
-};
-
-/* Render Summary */
-function renderSummary() {
-  const list = document.getElementById("summaryItems");
-  list.innerHTML = "";
-
-  let total = 0;
-
-  cart.forEach(item => {
-    const itemTotal = item.price * item.q;
-    total += itemTotal;
-
-    list.innerHTML += `
-      <div class="summary-item">
-        <div>
-          <div class="item-name">${item.name}</div>
-          <div class="item-qty">Qty: ${item.q}</div>
-        </div>
-        <div class="item-total">₹${itemTotal.toFixed(2)}</div>
-      </div>
-    `;
-  });
-
-  document.getElementById("totalAmount").textContent =
-    "₹" + total.toFixed(2);
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#dcfce7,#bbf7d0);
 }
 
-/* Place Order */
-window.handleCheckout = async function (e) {
-  e.preventDefault();
+/* NAVBAR */
+nav{
+  background:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.nav{
+  max-width:1280px;
+  margin:auto;
+  height:64px;
+  padding:0 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.brand{display:flex;gap:12px;align-items:center;}
+.brand-icon{
+  background:#16a34a;
+  color:#fff;
+  padding:8px;
+  border-radius:8px;
+}
+.brand h1{font-size:20px;color:#1f2937;}
+.brand p{font-size:12px;color:#6b7280;}
 
-  const order = {
-    status: "pending",
-    created_at: serverTimestamp(),
-    customer_name: customerName.value,
-    customer_email: customerEmail.value,
-    phone_number: phoneNumber.value,
-    delivery_address: deliveryAddress.value,
-    total_amount: cart.reduce((s, i) => s + i.price * i.q, 0),
-    currency: "INR",
-    order_items: cart.map(i => ({
-      name: i.name,
-      price: i.price,
-      quantity: i.q
-    }))
-  };
+.nav-actions{display:flex;gap:12px;align-items:center;}
+.nav-actions a,
+.nav-actions button{
+  border:none;
+  background:none;
+  cursor:pointer;
+  padding:6px 14px;
+  border-radius:8px;
+  font-weight:500;
+}
+.nav-actions a.active{
+  background:#dcfce7;
+  color:#16a34a;
+}
+.cart-btn{
+  background:#16a34a;
+  color:#fff;
+  position:relative;
+}
+.badge{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  background:#dc2626;
+  color:#fff;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:bold;
+}
 
-  const ref = await addDoc(collection(db, "orders"), order);
+/* MAIN */
+main{
+  max-width:1280px;
+  margin:auto;
+  padding:32px 16px;
+}
+h2{font-size:36px;color:#1f2937;}
+.subtitle{
+  color:#4b5563;
+  margin-bottom:32px;
+}
 
-  localStorage.removeItem("cart");
+/* FILTERS */
+.filters{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:32px;
+}
+.filter{
+  border:1px solid #d1d5db;
+  background:#fff;
+  padding:6px 20px;
+  border-radius:999px;
+  cursor:pointer;
+}
+.filter.active{
+  background:#16a34a;
+  color:#fff;
+  border-color:#16a34a;
+}
 
-  document.getElementById("orderId").textContent = ref.id;
-  document.getElementById("formContainer").classList.add("hide");
-  document.getElementById("successMessage").classList.add("show");
-};
+/* MENU GRID */
+.grid{
+  display:grid;
+  gap:24px;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+}
+.card{
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+  transition:.2s;
+}
+.card:hover{transform:translateY(-4px);}
+.card img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+}
+.card-body{padding:20px;}
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+}
+.name{font-size:20px;font-weight:700;}
+.price{
+  background:#dcfce7;
+  color:#16a34a;
+  padding:4px 10px;
+  border-radius:999px;
+  font-weight:600;
+  font-size:14px;
+}
+.cat{
+  font-size:14px;
+  color:#6b7280;
+  margin:4px 0;
+}
+.desc{
+  font-size:14px;
+  color:#4b5563;
+  margin-bottom:16px;
+}
+.add{
+  width:100%;
+  border:none;
+  background:#16a34a;
+  color:#fff;
+  padding:12px;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+}
+.add.added{
+  background:#22c55e;
+  transform:scale(.95);
+}
 
-/* Nav */
-window.goBack = () => location.href = "customer.html";
-window.goToMenu = () => location.href = "customer.html";
+/* CART */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  z-index:40;
+}
+.overlay.show{display:block;}
+
+.cart{
+  position:fixed;
+  top:0;
+  right:0;
+  height:100%;
+  width:100%;
+  max-width:400px;
+  background:#fff;
+  transform:translateX(100%);
+  transition:.3s;
+  z-index:50;
+  display:flex;
+  flex-direction:column;
+}
+.cart.open{transform:translateX(0);}
+
+.cart-head,
+.cart-foot{
+  padding:20px;
+  border-bottom:1px solid #e5e7eb;
+}
+.cart-foot{
+  border-top:1px solid #e5e7eb;
+  background:#f9fafb;
+}
+
+.cart-head {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;           
+  font-weight: 600;
+}
+
+.close-btn {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.close-btn:hover {
+  transform: rotate(90deg) scale(1.2);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  border-color: #ff6f91;
+}
+
+.items{
+  flex:1;
+  overflow:auto;
+  padding:20px;
+}
+.item{
+  background:#f9fafb;
+  border-radius:8px;
+  padding:12px;
+  display:flex;
+  gap:12px;
+  margin-bottom:12px;
+}
+.item img{
+  width:70px;
+  height:70px;
+  border-radius:8px;
+  object-fit:cover;
+}
+.controls{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top:4px;
+}
+.q{
+  border:1px solid #d1d5db;
+  background:#fff;
+  padding:2px 8px;
+  border-radius:4px;
+  cursor:pointer;
+}
+.remove{
+  margin-left:auto;
+  border:none;
+  background:none;
+  color:#dc2626;
+  cursor:pointer;
+}
+.checkout{
+  width:100%;
+  border:none;
+  background:#16a34a;
+  color:#fff;
+  padding:14px;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* QUANTITY MODAL */
+.qty-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  z-index:100;
+  align-items:center;
+  justify-content:center;
+}
+.qty-overlay.show{display:flex;}
+
+.qty-modal{
+  background:#fff;
+  border-radius:12px;
+  padding:32px;
+  width:90%;
+  max-width:320px;
+  box-shadow:0 10px 40px rgba(0,0,0,.2);
+  text-align:center;
+}
+.qty-modal h3{
+  font-size:20px;
+  margin-bottom:20px;
+  color:#1f2937;
+}
+.qty-controls{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  margin-bottom:24px;
+}
+.qty-btn{
+  background:#16a34a;
+  color:#fff;
+  border:none;
+  width:40px;
+  height:40px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:18px;
+  font-weight:600;
+}
+.qty-btn:hover{background:#15803d;}
+.qty-display{
+  font-size:24px;
+  font-weight:700;
+  color:#1f2937;
+  min-width:60px;
+}
+.qty-actions{
+  display:flex;
+  gap:12px;
+}
+.qty-add{
+  flex:1;
+  background:#16a34a;
+  color:#fff;
+  border:none;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+.qty-add:hover{background:#15803d;}
+.qty-cancel{
+  flex:1;
+  background:#e5e7eb;
+  color:#1f2937;
+  border:none;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+.qty-cancel:hover{background:#d1d5db;}
+</style>
+</head>
+
+<body onload="initApp()">
+
+<nav>
+  <div class="nav">
+    <div class="brand">
+      <div class="brand-icon">🥬</div>
+      <div>
+        <h1>VegDelight</h1>
+        <p>Fresh Vegetarian Food</p>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <a class="active">Menu</a>
+      <a>Orders</a>
+      <button class="cart-btn" onclick="toggleCart()">🛒
+        <span id="count" class="badge">0</span>
+      </button>
+      <button onclick="logout()">🚪</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <h2>Our Menu</h2>
+  <p class="subtitle">Fresh vegetarian dishes made with love</p>
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+<div class="cart" id="cart">
+  <div class="cart-head">
+    <span>Your Cart</span>
+    <button class="close-btn" onclick="toggleCart()">❌</button>
+  </div>
+  <div class="items" id="cart-items">
+  </div>
+  <div class="cart-foot">
+    <strong>Total: ₹0.00</strong>
+    <button class="checkout" onclick="checkout()">Checkout</button>
+  </div>
+</div>
+
+<div class="qty-overlay" id="qty-overlay">
+  <div class="qty-modal">
+    <h3 id="qty-title">Select Quantity</h3>
+    <div class="qty-controls">
+      <button class="qty-btn" onclick="decreaseQty()">−</button>
+      <div class="qty-display" id="qty-value">1</div>
+      <button class="qty-btn" onclick="increaseQty()">+</button>
+    </div>
+    <div class="qty-actions">
+      <button class="qty-add" onclick="confirmQty()">Add to Cart</button>
+      <button class="qty-cancel" onclick="closeQtyModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const MENU=[
+ {id:1,name:'Paneer Tikka',price:80,cat:'Appetizer',desc:'Grilled cottage cheese',img:'https://www.indianveggiedelight.com/wp-content/uploads/2021/08/air-fryer-paneer-tikka-featured.jpg'},
+ {id:2,name:'Samosa',price:40,cat:'Appetizer',desc:'Crispy pastry snack',img:'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/samosa-recipe.webp'},
+ {id:3,name:'Palak Paneer',price:70,cat:'Main Course',desc:'Paneer in spinach gravy',img:'https://www.cookwithmanali.com/wp-content/uploads/2019/08/Palak-Paneer-500x500.jpg'},
+ {id:4,name:'Dal Makhani',price:35,cat:'Main Course',desc:'Slow cooked lentils',img:'https://sinfullyspicy.com/wp-content/uploads/2015/03/1200-by-1200-images-1.jpg'},
+ {id:5,name:'Gulab Jamun',price:55,cat:'Dessert',desc:'Milk dumplings in syrup',img:'https://i0.wp.com/www.chitrasfoodbook.com/wp-content/uploads/2016/10/gulab-jamun-using-mix.jpg'},
+ {id:6,name:'Mango Lassi',price:80,cat:'Beverage',desc:'Sweet mango yogurt drink',img:'https://aroundtheyum.com/wp-content/uploads/2024/09/mango-lassi-recipe.jpg'}
+];
+
+let cartData=[],activeFilter='All',currentItemId=null,currentQty=1,currentBtn=null;
+
+function initApp(){
+ if(!localStorage.getItem('userEmail')){
+   location.href='index.html';
+   return;
+ }
+ cartData=JSON.parse(localStorage.getItem('cart')||'[]');
+ buildFilters();
+ renderMenu();
+ renderCart();
+}
+
+function buildFilters(){
+ const cats=['All',...new Set(MENU.map(i=>i.cat))];
+ filters.innerHTML=cats.map(c=>
+  `<button class="filter ${c==='All'?'active':''}" onclick="applyFilter('${c}',this)">${c}</button>`
+ ).join('');
+}
+
+function applyFilter(cat,btn){
+ activeFilter=cat;
+ document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+ renderMenu();
+}
+
+function renderMenu(){
+ const list=activeFilter==='All'?MENU:MENU.filter(i=>i.cat===activeFilter);
+ grid.innerHTML=list.map(i=>`
+  <div class="card">
+    <img src="${i.img}">
+    <div class="card-body">
+      <div class="row">
+        <div class="name">${i.name}</div>
+        <div class="price">₹${i.price}</div>
+      </div>
+      <div class="cat">${i.cat}</div>
+      <div class="desc">${i.desc}</div>
+      <button class="add" onclick="openQtyModal(${i.id},this)">Add to Cart</button>
+    </div>
+  </div>
+ `).join('');
+}
+
+function openQtyModal(id,btn){
+ currentItemId=id;
+ currentBtn=btn;
+ currentQty=1;
+ const item=MENU.find(m=>m.id===id);
+ document.getElementById('qty-title').textContent=`${item.name} - Select Quantity`;
+ document.getElementById('qty-value').textContent='1';
+ document.getElementById('qty-overlay').classList.add('show');
+}
+
+function closeQtyModal(){
+ document.getElementById('qty-overlay').classList.remove('show');
+ currentItemId=null;
+ currentQty=1;
+ currentBtn=null;
+}
+
+function increaseQty(){
+ currentQty++;
+ document.getElementById('qty-value').textContent=currentQty;
+}
+
+function decreaseQty(){
+ if(currentQty>1){
+  currentQty--;
+  document.getElementById('qty-value').textContent=currentQty;
+ }
+}
+
+function confirmQty(){
+ const found=cartData.find(x=>x.id===currentItemId);
+ if(found) found.q+=currentQty;
+ else cartData.push({...MENU.find(m=>m.id===currentItemId), q: currentQty});
+ saveCart();
+ renderCart();
+ const btn=currentBtn;
+ btn.classList.add('added');
+ btn.textContent='Added ✓';
+ setTimeout(()=>{btn.classList.remove('added');btn.textContent='Add to Cart'},900);
+ closeQtyModal();
+}
+
+function renderCart(){
+ count.textContent=cartData.reduce((s,i)=>s+i.q,0);
+ if(!cartData.length){
+  cart.innerHTML=`<div class="cart-head"><span>Your Cart</span><button class="close-btn" onclick="toggleCart()">❌</button></div>
+                  <div class="items">Cart is empty</div>`;
+  return;
+ }
+ cart.innerHTML=`
+ <div class="cart-head"><span>Your Cart</span><button class="close-btn" onclick="toggleCart()">❌</button></div>
+ <div class="items">
+  ${cartData.map(i=>`
+   <div class="item">
+     <img src="${i.img}">
+     <div>
+       <strong>${i.name}</strong><br>₹${i.price}
+       <div class="controls">
+         <button class="q" onclick="changeQty(${i.id},-1)">−</button>${i.q}
+         <button class="q" onclick="changeQty(${i.id},1)">+</button>
+         <button class="remove" onclick="removeItem(${i.id})">✕</button>
+       </div>
+     </div>
+   </div>
+  `).join('')}
+ </div>
+ <div class="cart-foot">
+  <strong>Total: ₹${cartData.reduce((s,i)=>s+i.q*i.price,0).toFixed(2)}</strong>
+  <button class="checkout" onclick="checkout()">Checkout</button>
+ </div>`;
+}
+
+function changeQty(id,d){
+ const item=cartData.find(i=>i.id===id);
+ item.q+=d;
+ if(item.q<=0) removeItem(id);
+ saveCart();
+ renderCart();
+}
+
+function removeItem(id){
+ cartData=cartData.filter(i=>i.id!==id);
+ saveCart();
+ renderCart();
+}
+
+function saveCart(){
+ localStorage.setItem('cart',JSON.stringify(cartData));
+}
+
+function toggleCart(){
+ cart.classList.toggle('open');
+ overlay.classList.toggle('show');
+}
+
+function checkout(){
+ if(!cartData.length) return alert('Cart empty');
+ location.href='checkout.html';
+}
+
+function logout(){
+ localStorage.clear();
+ location.href='index.html';
+}
 </script>
-
-
-
 
 </body>
 </html>
+	
