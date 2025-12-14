@@ -6,11 +6,11 @@
 <title>VegDelight – Menu</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;}
 body{
   font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   min-height:100vh;
-  background:linear-gradient(135deg,#dcfce7,#bbf7d0)
+  background:linear-gradient(135deg,#dcfce7,#bbf7d0);
 }
 
 /* NAVBAR */
@@ -19,7 +19,7 @@ nav{
   box-shadow:0 2px 6px rgba(0,0,0,.1);
   position:sticky;
   top:0;
-  z-index:10
+  z-index:10;
 }
 .nav{
   max-width:1280px;
@@ -28,19 +28,19 @@ nav{
   padding:0 16px;
   display:flex;
   align-items:center;
-  justify-content:space-between
+  justify-content:space-between;
 }
-.brand{display:flex;gap:12px;align-items:center}
+.brand{display:flex;gap:12px;align-items:center;}
 .brand-icon{
   background:#16a34a;
   color:#fff;
   padding:8px;
-  border-radius:8px
+  border-radius:8px;
 }
-.brand h1{font-size:20px;color:#1f2937}
-.brand p{font-size:12px;color:#6b7280}
+.brand h1{font-size:20px;color:#1f2937;}
+.brand p{font-size:12px;color:#6b7280;}
 
-.nav-actions{display:flex;gap:12px;align-items:center}
+.nav-actions{display:flex;gap:12px;align-items:center;}
 .nav-actions a,
 .nav-actions button{
   border:none;
@@ -48,16 +48,16 @@ nav{
   cursor:pointer;
   padding:6px 14px;
   border-radius:8px;
-  font-weight:500
+  font-weight:500;
 }
 .nav-actions a.active{
   background:#dcfce7;
-  color:#16a34a
+  color:#16a34a;
 }
 .cart-btn{
   background:#16a34a;
   color:#fff;
-  position:relative
+  position:relative;
 }
 .badge{
   position:absolute;
@@ -72,19 +72,19 @@ nav{
   align-items:center;
   justify-content:center;
   font-size:12px;
-  font-weight:bold
+  font-weight:bold;
 }
 
 /* MAIN */
 main{
   max-width:1280px;
   margin:auto;
-  padding:32px 16px
+  padding:32px 16px;
 }
-h2{font-size:36px;color:#1f2937}
+h2{font-size:36px;color:#1f2937;}
 .subtitle{
   color:#4b5563;
-  margin-bottom:32px
+  margin-bottom:32px;
 }
 
 /* FILTERS */
@@ -92,64 +92,64 @@ h2{font-size:36px;color:#1f2937}
   display:flex;
   gap:12px;
   flex-wrap:wrap;
-  margin-bottom:32px
+  margin-bottom:32px;
 }
 .filter{
   border:1px solid #d1d5db;
   background:#fff;
   padding:6px 20px;
   border-radius:999px;
-  cursor:pointer
+  cursor:pointer;
 }
 .filter.active{
   background:#16a34a;
   color:#fff;
-  border-color:#16a34a
+  border-color:#16a34a;
 }
 
 /* MENU GRID */
 .grid{
   display:grid;
   gap:24px;
-  grid-template-columns:repeat(auto-fill,minmax(240px,1fr))
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
 }
 .card{
   background:#fff;
   border-radius:12px;
   overflow:hidden;
   box-shadow:0 2px 6px rgba(0,0,0,.1);
-  transition:.2s
+  transition:.2s;
 }
-.card:hover{transform:translateY(-4px)}
+.card:hover{transform:translateY(-4px);}
 .card img{
   width:100%;
   height:150px;
-  object-fit:cover
+  object-fit:cover;
 }
-.card-body{padding:20px}
+.card-body{padding:20px;}
 .row{
   display:flex;
   justify-content:space-between;
-  gap:8px
+  gap:8px;
 }
-.name{font-size:20px;font-weight:700}
+.name{font-size:20px;font-weight:700;}
 .price{
   background:#dcfce7;
   color:#16a34a;
   padding:4px 10px;
   border-radius:999px;
   font-weight:600;
-  font-size:14px
+  font-size:14px;
 }
 .cat{
   font-size:14px;
   color:#6b7280;
-  margin:4px 0
+  margin:4px 0;
 }
 .desc{
   font-size:14px;
   color:#4b5563;
-  margin-bottom:16px
+  margin-bottom:16px;
 }
 .add{
   width:100%;
@@ -159,11 +159,11 @@ h2{font-size:36px;color:#1f2937}
   padding:12px;
   border-radius:8px;
   font-weight:600;
-  cursor:pointer
+  cursor:pointer;
 }
 .add.added{
   background:#22c55e;
-  transform:scale(.95)
+  transform:scale(.95);
 }
 
 /* CART */
@@ -172,9 +172,9 @@ h2{font-size:36px;color:#1f2937}
   inset:0;
   background:rgba(0,0,0,.5);
   display:none;
-  z-index:40
+  z-index:40;
 }
-.overlay.show{display:block}
+.overlay.show{display:block;}
 
 .cart{
   position:fixed;
@@ -188,23 +188,52 @@ h2{font-size:36px;color:#1f2937}
   transition:.3s;
   z-index:50;
   display:flex;
-  flex-direction:column
+  flex-direction:column;
 }
-.cart.open{transform:translateX(0)}
+.cart.open{transform:translateX(0);}
 
 .cart-head,
 .cart-foot{
   padding:20px;
-  border-bottom:1px solid #e5e7eb
+  border-bottom:1px solid #e5e7eb;
 }
 .cart-foot{
   border-top:1px solid #e5e7eb;
-  background:#f9fafb
+  background:#f9fafb;
 }
+
+.cart-head {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;           
+  font-weight: 600;
+}
+
+.close-btn {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.close-btn:hover {
+  transform: rotate(90deg) scale(1.2);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  border-color: #ff6f91;
+}
+
 .items{
   flex:1;
   overflow:auto;
-  padding:20px
+  padding:20px;
 }
 .item{
   background:#f9fafb;
@@ -212,33 +241,33 @@ h2{font-size:36px;color:#1f2937}
   padding:12px;
   display:flex;
   gap:12px;
-  margin-bottom:12px
+  margin-bottom:12px;
 }
 .item img{
   width:70px;
   height:70px;
   border-radius:8px;
-  object-fit:cover
+  object-fit:cover;
 }
 .controls{
   display:flex;
   gap:8px;
   align-items:center;
-  margin-top:4px
+  margin-top:4px;
 }
 .q{
   border:1px solid #d1d5db;
   background:#fff;
   padding:2px 8px;
   border-radius:4px;
-  cursor:pointer
+  cursor:pointer;
 }
 .remove{
   margin-left:auto;
   border:none;
   background:none;
   color:#dc2626;
-  cursor:pointer
+  cursor:pointer;
 }
 .checkout{
   width:100%;
@@ -248,8 +277,86 @@ h2{font-size:36px;color:#1f2937}
   padding:14px;
   border-radius:8px;
   font-weight:600;
-  cursor:pointer
+  cursor:pointer;
 }
+
+/* QUANTITY MODAL */
+.qty-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  z-index:100;
+  align-items:center;
+  justify-content:center;
+}
+.qty-overlay.show{display:flex;}
+
+.qty-modal{
+  background:#fff;
+  border-radius:12px;
+  padding:32px;
+  width:90%;
+  max-width:320px;
+  box-shadow:0 10px 40px rgba(0,0,0,.2);
+  text-align:center;
+}
+.qty-modal h3{
+  font-size:20px;
+  margin-bottom:20px;
+  color:#1f2937;
+}
+.qty-controls{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  margin-bottom:24px;
+}
+.qty-btn{
+  background:#16a34a;
+  color:#fff;
+  border:none;
+  width:40px;
+  height:40px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:18px;
+  font-weight:600;
+}
+.qty-btn:hover{background:#15803d;}
+.qty-display{
+  font-size:24px;
+  font-weight:700;
+  color:#1f2937;
+  min-width:60px;
+}
+.qty-actions{
+  display:flex;
+  gap:12px;
+}
+.qty-add{
+  flex:1;
+  background:#16a34a;
+  color:#fff;
+  border:none;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+.qty-add:hover{background:#15803d;}
+.qty-cancel{
+  flex:1;
+  background:#e5e7eb;
+  color:#1f2937;
+  border:none;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+.qty-cancel:hover{background:#d1d5db;}
 </style>
 </head>
 
@@ -283,7 +390,34 @@ h2{font-size:36px;color:#1f2937}
 </main>
 
 <div class="overlay" id="overlay" onclick="toggleCart()"></div>
-<div class="cart" id="cart"></div>
+
+<div class="cart" id="cart">
+  <div class="cart-head">
+    <span>Your Cart</span>
+    <button class="close-btn" onclick="toggleCart()">❌</button>
+  </div>
+  <div class="items" id="cart-items">
+  </div>
+  <div class="cart-foot">
+    <strong>Total: ₹0.00</strong>
+    <button class="checkout" onclick="checkout()">Checkout</button>
+  </div>
+</div>
+
+<div class="qty-overlay" id="qty-overlay">
+  <div class="qty-modal">
+    <h3 id="qty-title">Select Quantity</h3>
+    <div class="qty-controls">
+      <button class="qty-btn" onclick="decreaseQty()">−</button>
+      <div class="qty-display" id="qty-value">1</div>
+      <button class="qty-btn" onclick="increaseQty()">+</button>
+    </div>
+    <div class="qty-actions">
+      <button class="qty-add" onclick="confirmQty()">Add to Cart</button>
+      <button class="qty-cancel" onclick="closeQtyModal()">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const MENU=[
@@ -295,11 +429,11 @@ const MENU=[
  {id:6,name:'Mango Lassi',price:80,cat:'Beverage',desc:'Sweet mango yogurt drink',img:'https://aroundtheyum.com/wp-content/uploads/2024/09/mango-lassi-recipe.jpg'}
 ];
 
-let cartData=[],activeFilter='All';
+let cartData=[],activeFilter='All',currentItemId=null,currentQty=1,currentBtn=null;
 
 function initApp(){
  if(!localStorage.getItem('userEmail')){
-   location.href='login.html';
+   location.href='index.html';
    return;
  }
  cartData=JSON.parse(localStorage.getItem('cart')||'[]');
@@ -334,31 +468,63 @@ function renderMenu(){
       </div>
       <div class="cat">${i.cat}</div>
       <div class="desc">${i.desc}</div>
-      <button class="add" onclick="addToCart(${i.id},this)">Add to Cart</button>
+      <button class="add" onclick="openQtyModal(${i.id},this)">Add to Cart</button>
     </div>
   </div>
  `).join('');
 }
 
-function addToCart(id,btn){
- const found=cartData.find(x=>x.id===id);
- found?found.q++:cartData.push({...MENU.find(m=>m.id===id),q:1});
+function openQtyModal(id,btn){
+ currentItemId=id;
+ currentBtn=btn;
+ currentQty=1;
+ const item=MENU.find(m=>m.id===id);
+ document.getElementById('qty-title').textContent=`${item.name} - Select Quantity`;
+ document.getElementById('qty-value').textContent='1';
+ document.getElementById('qty-overlay').classList.add('show');
+}
+
+function closeQtyModal(){
+ document.getElementById('qty-overlay').classList.remove('show');
+ currentItemId=null;
+ currentQty=1;
+ currentBtn=null;
+}
+
+function increaseQty(){
+ currentQty++;
+ document.getElementById('qty-value').textContent=currentQty;
+}
+
+function decreaseQty(){
+ if(currentQty>1){
+  currentQty--;
+  document.getElementById('qty-value').textContent=currentQty;
+ }
+}
+
+function confirmQty(){
+ const found=cartData.find(x=>x.id===currentItemId);
+ if(found) found.q+=currentQty;
+ else cartData.push({...MENU.find(m=>m.id===currentItemId), q: currentQty});
  saveCart();
  renderCart();
+ const btn=currentBtn;
  btn.classList.add('added');
  btn.textContent='Added ✓';
  setTimeout(()=>{btn.classList.remove('added');btn.textContent='Add to Cart'},900);
+ closeQtyModal();
 }
 
 function renderCart(){
  count.textContent=cartData.reduce((s,i)=>s+i.q,0);
  if(!cartData.length){
-  cart.innerHTML=`<div class="cart-head">Cart <button onclick="toggleCart()">✕</button></div>
+  cart.innerHTML=`<div class="cart-head"><span>Your Cart</span><button class="close-btn" onclick="toggleCart()">❌</button></div>
                   <div class="items">Cart is empty</div>`;
   return;
  }
  cart.innerHTML=`
- <div class="cart-head">Your Cart <button onclick="toggleCart()">✕</button></div>
+ <div class="cart-head"><span>Your Cart</span><button class="close-btn" onclick="toggleCart()">❌</button></div>
  <div class="items">
   ${cartData.map(i=>`
    <div class="item">
@@ -410,9 +576,10 @@ function checkout(){
 
 function logout(){
  localStorage.clear();
- location.href='login.html';
+ location.href='index.html';
 }
 </script>
 
 </body>
 </html>
+	
