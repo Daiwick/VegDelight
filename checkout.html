@@ -171,14 +171,14 @@ function renderSummary() {
   let total = 0;
 
   cart.forEach(item => {
-    const itemTotal = item.price * item.q;
+    const itemTotal = item.price * item.qty;
     total += itemTotal;
 
     list.innerHTML += `
       <div class="summary-item">
         <div>
           <div class="item-name">${item.name}</div>
-          <div class="item-qty">Qty: ${item.q}</div>
+          <div class="item-qty">Qty: ${item.qty}</div>
         </div>
         <div class="item-total">₹${itemTotal.toFixed(2)}</div>
       </div>
@@ -205,7 +205,7 @@ window.handleCheckout = async function (e) {
     order_items: cart.map(i => ({
       name: i.name,
       price: i.price,
-      quantity: i.q
+      quantity: i.qty
     }))
   };
 
