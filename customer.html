@@ -4,362 +4,71 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VegDelight – Menu</title>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  min-height:100vh;
-  background:linear-gradient(135deg,#dcfce7,#bbf7d0);
-}
-
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh;background:linear-gradient(135deg,#dcfce7,#bbf7d0);}
 /* NAVBAR */
-nav{
-  background:#fff;
-  box-shadow:0 2px 6px rgba(0,0,0,.1);
-  position:sticky;
-  top:0;
-  z-index:10;
-}
-.nav{
-  max-width:1280px;
-  margin:auto;
-  height:64px;
-  padding:0 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
+nav{background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.1);position:sticky;top:0;z-index:10;}
+.nav{max-width:1280px;margin:auto;height:64px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;}
 .brand{display:flex;gap:12px;align-items:center;}
-.brand-icon{
-  background:#16a34a;
-  color:#fff;
-  padding:8px;
-  border-radius:8px;
-}
+.brand-icon{background:#16a34a;color:#fff;padding:8px;border-radius:8px;}
 .brand h1{font-size:20px;color:#1f2937;}
 .brand p{font-size:12px;color:#6b7280;}
-
 .nav-actions{display:flex;gap:12px;align-items:center;}
-.nav-actions a,
-.nav-actions button{
-  border:none;
-  background:none;
-  cursor:pointer;
-  padding:6px 14px;
-  border-radius:8px;
-  font-weight:500;
-}
-.nav-actions a.active{
-  background:#dcfce7;
-  color:#16a34a;
-}
-.cart-btn{
-  background:#16a34a;
-  color:#fff;
-  position:relative;
-}
-.badge{
-  position:absolute;
-  top:-6px;
-  right:-6px;
-  background:#dc2626;
-  color:#fff;
-  width:20px;
-  height:20px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  font-weight:bold;
-}
-
+.nav-actions a, .nav-actions button{border:none;background:none;cursor:pointer;padding:6px 14px;border-radius:8px;font-weight:500;}
+.nav-actions a.active{background:#dcfce7;color:#16a34a;}
+.cart-btn{background:#16a34a;color:#fff;position:relative;}
+.badge{position:absolute;top:-6px;right:-6px;background:#dc2626;color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold;}
 /* MAIN */
-main{
-  max-width:1280px;
-  margin:auto;
-  padding:32px 16px;
-}
+main{max-width:1280px;margin:auto;padding:32px 16px;}
 h2{font-size:36px;color:#1f2937;}
-.subtitle{
-  color:#4b5563;
-  margin-bottom:32px;
-}
-
-/* FILTERS */
-.filters{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-bottom:32px;
-}
-.filter{
-  border:1px solid #d1d5db;
-  background:#fff;
-  padding:6px 20px;
-  border-radius:999px;
-  cursor:pointer;
-}
-.filter.active{
-  background:#16a34a;
-  color:#fff;
-  border-color:#16a34a;
-}
-
-/* MENU GRID */
-.grid{
-  display:grid;
-  gap:24px;
-  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-}
-.card{
-  background:#fff;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 2px 6px rgba(0,0,0,.1);
-  transition:.2s;
-}
+.subtitle{color:#4b5563;margin-bottom:32px;}
+.filters{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px;}
+.filter{border:1px solid #d1d5db;background:#fff;padding:6px 20px;border-radius:999px;cursor:pointer;}
+.filter.active{background:#16a34a;color:#fff;border-color:#16a34a;}
+.grid{display:grid;gap:24px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
+.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.1);transition:.2s;}
 .card:hover{transform:translateY(-4px);}
-.card img{
-  width:100%;
-  height:150px;
-  object-fit:cover;
-}
+.card img{width:100%;height:150px;object-fit:cover;}
 .card-body{padding:20px;}
-.row{
-  display:flex;
-  justify-content:space-between;
-  gap:8px;
-}
+.row{display:flex;justify-content:space-between;gap:8px;}
 .name{font-size:20px;font-weight:700;}
-.price{
-  background:#dcfce7;
-  color:#16a34a;
-  padding:4px 10px;
-  border-radius:999px;
-  font-weight:600;
-  font-size:14px;
-}
-.cat{
-  font-size:14px;
-  color:#6b7280;
-  margin:4px 0;
-}
-.desc{
-  font-size:14px;
-  color:#4b5563;
-  margin-bottom:16px;
-}
-.add{
-  width:100%;
-  border:none;
-  background:#16a34a;
-  color:#fff;
-  padding:12px;
-  border-radius:8px;
-  font-weight:600;
-  cursor:pointer;
-}
-.add.added{
-  background:#22c55e;
-  transform:scale(.95);
-}
-
-/* CART */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.5);
-  display:none;
-  z-index:40;
-}
+.price{background:#dcfce7;color:#16a34a;padding:4px 10px;border-radius:999px;font-weight:600;font-size:14px;}
+.cat{font-size:14px;color:#6b7280;margin:4px 0;}
+.desc{font-size:14px;color:#4b5563;margin-bottom:16px;}
+.add{width:100%;border:none;background:#16a34a;color:#fff;padding:12px;border-radius:8px;font-weight:600;cursor:pointer;}
+.add.added{background:#22c55e;transform:scale(.95);}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:40;}
 .overlay.show{display:block;}
-
-.cart{
-  position:fixed;
-  top:0;
-  right:0;
-  height:100%;
-  width:100%;
-  max-width:400px;
-  background:#fff;
-  transform:translateX(100%);
-  transition:.3s;
-  z-index:50;
-  display:flex;
-  flex-direction:column;
-}
+.cart{position:fixed;top:0;right:0;height:100%;width:100%;max-width:400px;background:#fff;transform:translateX(100%);transition:.3s;z-index:50;display:flex;flex-direction:column;}
 .cart.open{transform:translateX(0);}
-
-.cart-head,
-.cart-foot{
-  padding:20px;
-  border-bottom:1px solid #e5e7eb;
-}
-.cart-foot{
-  border-top:1px solid #e5e7eb;
-  background:#f9fafb;
-}
-
-.cart-head {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center;           
-  font-weight: 600;
-}
-
-.close-btn {
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  border: 2px solid #fff;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.close-btn:hover {
-  transform: rotate(90deg) scale(1.2);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-  border-color: #ff6f91;
-}
-
-.items{
-  flex:1;
-  overflow:auto;
-  padding:20px;
-}
-.item{
-  background:#f9fafb;
-  border-radius:8px;
-  padding:12px;
-  display:flex;
-  gap:12px;
-  margin-bottom:12px;
-}
-.item img{
-  width:70px;
-  height:70px;
-  border-radius:8px;
-  object-fit:cover;
-}
-.controls{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  margin-top:4px;
-}
-.q{
-  border:1px solid #d1d5db;
-  background:#fff;
-  padding:2px 8px;
-  border-radius:4px;
-  cursor:pointer;
-}
-.remove{
-  margin-left:auto;
-  border:none;
-  background:none;
-  color:#dc2626;
-  cursor:pointer;
-}
-.checkout{
-  width:100%;
-  border:none;
-  background:#16a34a;
-  color:#fff;
-  padding:14px;
-  border-radius:8px;
-  font-weight:600;
-  cursor:pointer;
-}
-
-/* QUANTITY MODAL */
-.qty-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.5);
-  display:none;
-  z-index:100;
-  align-items:center;
-  justify-content:center;
-}
+.cart-head, .cart-foot{padding:20px;border-bottom:1px solid #e5e7eb;}
+.cart-foot{border-top:1px solid #e5e7eb;background:#f9fafb;}
+.cart-head{display:flex;justify-content:space-between;align-items:center;font-weight:600;}
+.close-btn{background:linear-gradient(135deg, #ff9a9e, #fad0c4);border:2px solid #fff;border-radius:50%;width:40px;height:40px;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+.close-btn:hover{transform:rotate(90deg) scale(1.2);box-shadow:0 6px 18px rgba(0,0,0,0.2);border-color:#ff6f91;}
+.items{flex:1;overflow:auto;padding:20px;}
+.item{background:#f9fafb;border-radius:8px;padding:12px;display:flex;gap:12px;margin-bottom:12px;}
+.item img{width:70px;height:70px;border-radius:8px;object-fit:cover;}
+.controls{display:flex;gap:8px;align-items:center;margin-top:4px;}
+.q{border:1px solid #d1d5db;background:#fff;padding:2px 8px;border-radius:4px;cursor:pointer;}
+.remove{margin-left:auto;border:none;background:none;color:#dc2626;cursor:pointer;}
+.checkout{width:100%;border:none;background:#16a34a;color:#fff;padding:14px;border-radius:8px;font-weight:600;cursor:pointer;}
+.qty-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:100;align-items:center;justify-content:center;}
 .qty-overlay.show{display:flex;}
-
-.qty-modal{
-  background:#fff;
-  border-radius:12px;
-  padding:32px;
-  width:90%;
-  max-width:320px;
-  box-shadow:0 10px 40px rgba(0,0,0,.2);
-  text-align:center;
-}
-.qty-modal h3{
-  font-size:20px;
-  margin-bottom:20px;
-  color:#1f2937;
-}
-.qty-controls{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:16px;
-  margin-bottom:24px;
-}
-.qty-btn{
-  background:#16a34a;
-  color:#fff;
-  border:none;
-  width:40px;
-  height:40px;
-  border-radius:8px;
-  cursor:pointer;
-  font-size:18px;
-  font-weight:600;
-}
+.qty-modal{background:#fff;border-radius:12px;padding:32px;width:90%;max-width:320px;box-shadow:0 10px 40px rgba(0,0,0,.2);text-align:center;}
+.qty-modal h3{font-size:20px;margin-bottom:20px;color:#1f2937;}
+.qty-controls{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:24px;}
+.qty-btn{background:#16a34a;color:#fff;border:none;width:40px;height:40px;border-radius:8px;cursor:pointer;font-size:18px;font-weight:600;}
 .qty-btn:hover{background:#15803d;}
-.qty-display{
-  font-size:24px;
-  font-weight:700;
-  color:#1f2937;
-  min-width:60px;
-}
-.qty-actions{
-  display:flex;
-  gap:12px;
-}
-.qty-add{
-  flex:1;
-  background:#16a34a;
-  color:#fff;
-  border:none;
-  padding:12px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:600;
-}
+.qty-display{font-size:24px;font-weight:700;color:#1f2937;min-width:60px;}
+.qty-actions{display:flex;gap:12px;}
+.qty-add{flex:1;background:#16a34a;color:#fff;border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:600;}
 .qty-add:hover{background:#15803d;}
-.qty-cancel{
-  flex:1;
-  background:#e5e7eb;
-  color:#1f2937;
-  border:none;
-  padding:12px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:600;
-}
+.qty-cancel{flex:1;background:#e5e7eb;color:#1f2937;border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:600;}
 .qty-cancel:hover{background:#d1d5db;}
 </style>
 </head>
-
 <body onload="initApp()">
 
 <nav>
@@ -374,9 +83,7 @@ h2{font-size:36px;color:#1f2937;}
     <div class="nav-actions">
       <a class="active">Menu</a>
       <a>Orders</a>
-      <button class="cart-btn" onclick="toggleCart()">🛒
-        <span id="count" class="badge">0</span>
-      </button>
+      <button class="cart-btn" onclick="toggleCart()">🛒<span id="count" class="badge">0</span></button>
       <button onclick="logout()">🚪</button>
     </div>
   </div>
@@ -390,16 +97,14 @@ h2{font-size:36px;color:#1f2937;}
 </main>
 
 <div class="overlay" id="overlay" onclick="toggleCart()"></div>
-
 <div class="cart" id="cart">
   <div class="cart-head">
     <span>Your Cart</span>
     <button class="close-btn" onclick="toggleCart()">❌</button>
   </div>
-  <div class="items" id="cart-items">
-  </div>
+  <div class="items" id="cart-items"></div>
   <div class="cart-foot">
-    <strong>Total: ₹0.00</strong>
+    <strong id="cart-total">Total: ₹0.00</strong>
     <button class="checkout" onclick="checkout()">Checkout</button>
   </div>
 </div>
@@ -419,167 +124,170 @@ h2{font-size:36px;color:#1f2937;}
   </div>
 </div>
 
-<script>
-const MENU=[
- {id:1,name:'Paneer Tikka',price:80,cat:'Appetizer',desc:'Grilled cottage cheese',img:'https://www.indianveggiedelight.com/wp-content/uploads/2021/08/air-fryer-paneer-tikka-featured.jpg'},
- {id:2,name:'Samosa',price:40,cat:'Appetizer',desc:'Crispy pastry snack',img:'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/samosa-recipe.webp'},
- {id:3,name:'Palak Paneer',price:70,cat:'Main Course',desc:'Paneer in spinach gravy',img:'https://www.cookwithmanali.com/wp-content/uploads/2019/08/Palak-Paneer-500x500.jpg'},
- {id:4,name:'Dal Makhani',price:35,cat:'Main Course',desc:'Slow cooked lentils',img:'https://sinfullyspicy.com/wp-content/uploads/2015/03/1200-by-1200-images-1.jpg'},
- {id:5,name:'Gulab Jamun',price:55,cat:'Dessert',desc:'Milk dumplings in syrup',img:'https://i0.wp.com/www.chitrasfoodbook.com/wp-content/uploads/2016/10/gulab-jamun-using-mix.jpg'},
- {id:6,name:'Mango Lassi',price:80,cat:'Beverage',desc:'Sweet mango yogurt drink',img:'https://aroundtheyum.com/wp-content/uploads/2024/09/mango-lassi-recipe.jpg'}
-];
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-let cartData=[],activeFilter='All',currentItemId=null,currentQty=1,currentBtn=null;
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyBAfAOtcgECePqbIwgKJ0Uc9tsV3w96vZs",
+  authDomain: "editor-7f117.firebaseapp.com",
+  projectId: "editor-7f117",
+  storageBucket: "editor-7f117.firebasestorage.app",
+  messagingSenderId: "1019548750180",
+  appId: "1:1019548750180:web:341dec1ec6d612f8e12a71"
+};
 
-function initApp(){
- if(!localStorage.getItem('userEmail')){
-   location.href='index.html';
-   return;
- }
- cartData=JSON.parse(localStorage.getItem('cart')||'[]');
- buildFilters();
- renderMenu();
- renderCart();
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let MENU = [];
+let cartData = [];
+let activeFilter = 'All';
+let currentItemId = null;
+let currentQty = 1;
+
+// --- Load Menu from Firestore ---
+async function loadMenu() {
+  const snapshot = await getDocs(collection(db, "foodItems"));
+  MENU = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+  buildFilters();
+  renderMenu();
 }
 
-function buildFilters(){
- const cats=['All',...new Set(MENU.map(i=>i.cat))];
- filters.innerHTML=cats.map(c=>
-  `<button class="filter ${c==='All'?'active':''}" onclick="applyFilter('${c}',this)">${c}</button>`
- ).join('');
+// --- Filters ---
+function buildFilters() {
+  const filters = document.getElementById('filters');
+  const categories = ['All', ...new Set(MENU.map(i => i.cat))];
+  filters.innerHTML = '';
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'filter' + (cat === activeFilter ? ' active' : '');
+    btn.innerText = cat;
+    btn.onclick = () => { activeFilter = cat; buildFilters(); renderMenu(); };
+    filters.appendChild(btn);
+  });
 }
 
-function applyFilter(cat,btn){
- activeFilter=cat;
- document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));
- btn.classList.add('active');
- renderMenu();
+// --- Render Menu ---
+function renderMenu() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  MENU.filter(i => activeFilter === 'All' || i.cat === activeFilter)
+      .forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${item.img}">
+          <div class="card-body">
+            <div class="name">${item.name}</div>
+            <div class="cat">${item.cat}</div>
+            <div class="desc">${item.desc}</div>
+            <div class="row">
+              <div class="price">₹${item.price.toFixed(2)}</div>
+            </div>
+            <button class="add" onclick="openQtyModal('${item.id}')">Add to Cart</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
 }
 
-function renderMenu(){
- const list=activeFilter==='All'?MENU:MENU.filter(i=>i.cat===activeFilter);
- grid.innerHTML=list.map(i=>`
-  <div class="card">
-    <img src="${i.img}">
-    <div class="card-body">
-      <div class="row">
+// --- Quantity Modal ---
+window.openQtyModal = function(id) {
+  currentItemId = id;
+  currentQty = 1;
+  document.getElementById('qty-value').innerText = currentQty;
+  const item = MENU.find(i => i.id === id);
+  document.getElementById('qty-title').innerText = item.name;
+  document.getElementById('qty-overlay').classList.add('show');
+}
+
+window.closeQtyModal = function() {
+  document.getElementById('qty-overlay').classList.remove('show');
+}
+
+window.increaseQty = function() { currentQty++; document.getElementById('qty-value').innerText = currentQty; }
+window.decreaseQty = function() { if(currentQty>1){ currentQty--; document.getElementById('qty-value').innerText = currentQty; } }
+
+window.confirmQty = function() {
+  const item = MENU.find(i => i.id === currentItemId);
+  const cartItem = cartData.find(i => i.id === currentItemId);
+  if(cartItem) cartItem.qty += currentQty;
+  else cartData.push({...item, qty: currentQty});
+  localStorage.setItem('cart', JSON.stringify(cartData));
+  renderCart();
+  closeQtyModal();
+}
+
+// --- Cart Functions ---
+window.toggleCart = function() {
+  document.getElementById('cart').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+
+function renderCart() {
+  const container = document.getElementById('cart-items');
+  container.innerHTML = '';
+  let total = 0;
+  cartData.forEach(i => {
+    total += i.price * i.qty;
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = `
+      <img src="${i.img}">
+      <div>
         <div class="name">${i.name}</div>
-        <div class="price">₹${i.price}</div>
+        <div class="controls">
+          <button class="q" onclick="changeQty('${i.id}', -1)">−</button>
+          <span>${i.qty}</span>
+          <button class="q" onclick="changeQty('${i.id}', 1)">+</button>
+        </div>
       </div>
-      <div class="cat">${i.cat}</div>
-      <div class="desc">${i.desc}</div>
-      <button class="add" onclick="openQtyModal(${i.id},this)">Add to Cart</button>
-    </div>
-  </div>
- `).join('');
+      <button class="remove" onclick="removeItem('${i.id}')">×</button>
+    `;
+    container.appendChild(div);
+  });
+  document.getElementById('cart-total').innerText = `Total: ₹${total.toFixed(2)}`;
+  document.getElementById('count').innerText = cartData.reduce((a,b)=>a+b.qty,0);
 }
 
-function openQtyModal(id,btn){
- currentItemId=id;
- currentBtn=btn;
- currentQty=1;
- const item=MENU.find(m=>m.id===id);
- document.getElementById('qty-title').textContent=`${item.name} - Select Quantity`;
- document.getElementById('qty-value').textContent='1';
- document.getElementById('qty-overlay').classList.add('show');
+window.changeQty = function(id, delta) {
+  const item = cartData.find(i => i.id === id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0) removeItem(id);
+  else renderCart();
+  localStorage.setItem('cart', JSON.stringify(cartData));
 }
 
-function closeQtyModal(){
- document.getElementById('qty-overlay').classList.remove('show');
- currentItemId=null;
- currentQty=1;
- currentBtn=null;
+window.removeItem = function(id) {
+  cartData = cartData.filter(i => i.id !== id);
+  localStorage.setItem('cart', JSON.stringify(cartData));
+  renderCart();
 }
 
-function increaseQty(){
- currentQty++;
- document.getElementById('qty-value').textContent=currentQty;
+// --- Checkout & Logout ---
+window.checkout = function() {
+  // Save cart to localStorage (already done in your code)
+  localStorage.setItem('cart', JSON.stringify(cartData));
+  // Redirect to checkout page
+  location.href = "checkout.html";
 }
 
-function decreaseQty(){
- if(currentQty>1){
-  currentQty--;
-  document.getElementById('qty-value').textContent=currentQty;
- }
+window.logout = function() { location.href = "index.html" }
+
+// --- Initialize App ---
+function initApp() {
+  loadMenu();
+  cartData = JSON.parse(localStorage.getItem('cart') || '[]');
+  renderCart();
 }
 
-function confirmQty(){
- const found=cartData.find(x=>x.id===currentItemId);
- if(found) found.q+=currentQty;
- else cartData.push({...MENU.find(m=>m.id===currentItemId), q: currentQty});
- saveCart();
- renderCart();
- const btn=currentBtn;
- btn.classList.add('added');
- btn.textContent='Added ✓';
- setTimeout(()=>{btn.classList.remove('added');btn.textContent='Add to Cart'},900);
- closeQtyModal();
-}
-
-function renderCart(){
- count.textContent=cartData.reduce((s,i)=>s+i.q,0);
- if(!cartData.length){
-  cart.innerHTML=`<div class="cart-head"><span>Your Cart</span><button class="close-btn" onclick="toggleCart()">❌</button></div>
-                  <div class="items">Cart is empty</div>`;
-  return;
- }
- cart.innerHTML=`
- <div class="cart-head"><span>Your Cart</span><button class="close-btn" onclick="toggleCart()">❌</button></div>
- <div class="items">
-  ${cartData.map(i=>`
-   <div class="item">
-     <img src="${i.img}">
-     <div>
-       <strong>${i.name}</strong><br>₹${i.price}
-       <div class="controls">
-         <button class="q" onclick="changeQty(${i.id},-1)">−</button>${i.q}
-         <button class="q" onclick="changeQty(${i.id},1)">+</button>
-         <button class="remove" onclick="removeItem(${i.id})">✕</button>
-       </div>
-     </div>
-   </div>
-  `).join('')}
- </div>
- <div class="cart-foot">
-  <strong>Total: ₹${cartData.reduce((s,i)=>s+i.q*i.price,0).toFixed(2)}</strong>
-  <button class="checkout" onclick="checkout()">Checkout</button>
- </div>`;
-}
-
-function changeQty(id,d){
- const item=cartData.find(i=>i.id===id);
- item.q+=d;
- if(item.q<=0) removeItem(id);
- saveCart();
- renderCart();
-}
-
-function removeItem(id){
- cartData=cartData.filter(i=>i.id!==id);
- saveCart();
- renderCart();
-}
-
-function saveCart(){
- localStorage.setItem('cart',JSON.stringify(cartData));
-}
-
-function toggleCart(){
- cart.classList.toggle('open');
- overlay.classList.toggle('show');
-}
-
-function checkout(){
- if(!cartData.length) return alert('Cart empty');
- location.href='checkout.html';
-}
-
-function logout(){
- localStorage.clear();
- location.href='index.html';
-}
+initApp();
 </script>
+
 
 </body>
 </html>
-	
