@@ -4,97 +4,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VegDelight – Menu Editor</title>
+
 <style>
-/* Reset & Base */
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, system-ui, sans-serif; }
-body { background: linear-gradient(135deg, #f5f7fa, #c3cfe2); min-height: 100vh; padding: 40px; color: #1f2937; }
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,Segoe UI,Roboto;}
+body{min-height:100vh;background:linear-gradient(135deg,#f5f7fa,#c3cfe2);padding:40px;color:#1f2937;}
+h1{text-align:center;font-size:2.2rem;margin-bottom:30px;}
+h2{margin:40px 0 16px;}
 
-/* Typography */
-h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 30px; color: #111827; text-align: center; }
-h2 { font-size: 1.5rem; margin: 40px 0 20px; color: #374151; }
-
-/* Grid Layout */
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-
-/* Card Style */
-.card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;
 }
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
 }
-
-/* Image */
-.card img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 15px;
-  transition: transform 0.3s ease;
+.card img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  border-radius:12px;
+  margin-bottom:12px;
 }
-.card img:hover { transform: scale(1.05); }
-
-/* Inputs & Textareas */
-input, textarea {
-  width: 100%;
-  padding: 10px 12px;
-  margin-bottom: 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  outline: none;
-  font-size: 0.95rem;
-  transition: border 0.2s ease, box-shadow 0.2s ease;
+input,textarea{
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+  border:1px solid #e5e7eb;
+  border-radius:10px;
 }
-input:focus, textarea:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+textarea{resize:vertical;}
+.row{display:flex;gap:10px;}
+button{
+  border:none;
+  padding:10px 14px;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
 }
-textarea { resize: vertical; min-height: 60px; }
-
-/* Row Layout */
-.row { display: flex; gap: 10px; }
-.row input { flex: 1; }
-
-/* Buttons */
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 12px;
-  padding: 10px 16px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-button:hover { transform: translateY(-2px); }
-
-.add-btn { background: linear-gradient(90deg, #16a34a, #22c55e); color: #fff; box-shadow: 0 4px 15px rgba(22,163,74,0.4); }
-.add-btn:hover { box-shadow: 0 6px 20px rgba(22,163,74,0.5); }
-
-.delete-btn { background: linear-gradient(90deg, #dc2626, #f87171); color: #fff; box-shadow: 0 4px 15px rgba(220,38,38,0.4); }
-.delete-btn:hover { box-shadow: 0 6px 20px rgba(220,38,38,0.5); }
-
-/* Save Note */
-.save-note {
-  color: #16a34a;
-  font-size: 0.85rem;
-  margin-top: 6px;
-  font-style: italic;
-  text-align: right;
-}
-
-/* Responsive */
-@media (max-width: 500px) {
-  .row { flex-direction: column; }
-}
+.add-btn{background:#16a34a;color:#fff;}
+.delete-btn{background:#dc2626;color:#fff;margin-top:6px;}
+.note{font-size:.85rem;color:#16a34a;text-align:right;margin-top:4px;}
 </style>
 </head>
+
 <body>
 
 <h1>🍽 VegDelight Menu Editor</h1>
@@ -103,7 +59,7 @@ button:hover { transform: translateY(-2px); }
 
 <h2>Add New Item</h2>
 <div class="card">
-  <input id="n_name" placeholder="Item Name">
+  <input id="n_name" placeholder="Item name">
   <div class="row">
     <input id="n_price" type="number" placeholder="Price">
     <input id="n_cat" placeholder="Category">
@@ -111,91 +67,94 @@ button:hover { transform: translateY(-2px); }
   <textarea id="n_desc" placeholder="Description"></textarea>
   <input id="n_img" placeholder="Image URL">
   <button class="add-btn" onclick="addItem()">Add Item</button>
-  <div class="save-note">Saved instantly to customer page</div>
+  <div class="note">Saved instantly to customer page</div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
+/* 🔥 SAME FIREBASE AS customer.html */
 const firebaseConfig = {
   apiKey: "AIzaSyBAfAOtcgECePqbIwgKJ0Uc9tsV3w96vZs",
   authDomain: "editor-7f117.firebaseapp.com",
-  projectId: "editor-7f117",
-  storageBucket: "editor-7f117.firebasestorage.app",
-  messagingSenderId: "1019548750180",
-  appId: "1:1019548750180:web:341dec1ec6d612f8e12a71"
+  projectId: "editor-7f117"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
 let foodItems = [];
 
-async function loadItems() {
-  const snapshot = await getDocs(collection(db, "foodItems"));
-  foodItems = snapshot.docs.map(doc => doc.data());
+/* LOAD ITEMS */
+async function loadItems(){
+  const snap = await getDocs(collection(db,"foodItems"));
+  foodItems = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   render();
 }
 
-function render() {
-  const box = document.getElementById('items');
-  box.innerHTML = '';
-  if (!foodItems.length) { box.innerHTML = '<p>No items yet</p>'; return; }
+/* RENDER */
+function render(){
+  const box = document.getElementById("items");
+  box.innerHTML = "";
+  if(!foodItems.length){
+    box.innerHTML = "<p>No items yet</p>";
+    return;
+  }
 
-  foodItems.forEach((item)=>{
-    box.innerHTML+=`
+  foodItems.forEach(item=>{
+    box.innerHTML += `
       <div class="card">
-        <img src="${item.img||''}">
-        <input value="${item.name}" onchange="update('${item.id}','name',this.value)">
+        <img src="${item.img || ''}">
+        <input value="${item.name}" onchange="updateItem('${item.id}','name',this.value)">
         <div class="row">
-          <input type="number" value="${item.price}" onchange="update('${item.id}','price',this.value)">
-          <input value="${item.cat||''}" onchange="update('${item.id}','cat',this.value)">
+          <input type="number" value="${item.price}" onchange="updateItem('${item.id}','price',this.value)">
+          <input value="${item.cat || ''}" onchange="updateItem('${item.id}','cat',this.value)">
         </div>
-        <textarea onchange="update('${item.id}','desc',this.value)">${item.desc||''}</textarea>
-        <input value="${item.img||''}" onchange="update('${item.id}','img',this.value)">
-        <button class="delete-btn" onclick="removeItem('${item.id}')">Delete</button>
+        <textarea onchange="updateItem('${item.id}','desc',this.value)">${item.desc || ''}</textarea>
+        <input value="${item.img || ''}" onchange="updateItem('${item.id}','img',this.value)">
+        <button class="delete-btn" onclick="deleteItem('${item.id}')">Delete</button>
       </div>
     `;
   });
 }
 
-window.update = async function(id,key,value){
+/* UPDATE */
+window.updateItem = async function(id,key,value){
   const item = foodItems.find(i=>i.id===id);
   if(!item) return;
-  item[key] = key==='price'?Number(value):value;
+  item[key] = key==="price" ? Number(value) : value;
   await setDoc(doc(db,"foodItems",id), item);
-  loadItems();
-}
+};
 
+/* ADD */
 window.addItem = async function(){
-  const n_name = document.getElementById('n_name');
-  const n_price = document.getElementById('n_price');
-  const n_cat = document.getElementById('n_cat');
-  const n_desc = document.getElementById('n_desc');
-  const n_img = document.getElementById('n_img');
+  if(!n_name.value || !n_price.value){
+    alert("Name & price required");
+    return;
+  }
 
-  if(!n_name.value||!n_price.value){alert('Name & price required');return;}
-
-  const newItem = {
-    id: Date.now().toString(),
-    name: n_name.value,
-    price: Number(n_price.value),
-    cat: n_cat.value,
-    desc: n_desc.value,
-    img: n_img.value
+  const id = Date.now().toString();
+  const item = {
+    name:n_name.value,
+    price:Number(n_price.value),
+    cat:n_cat.value,
+    desc:n_desc.value,
+    img:n_img.value
   };
 
-  await setDoc(doc(db,"foodItems", newItem.id), newItem);
+  await setDoc(doc(db,"foodItems",id), item);
 
-  n_name.value=n_price.value=n_cat.value=n_desc.value=n_img.value='';
+  n_name.value=n_price.value=n_cat.value=n_desc.value=n_img.value="";
   loadItems();
-}
+};
 
-window.removeItem = async function(id){
-  if(!confirm('Delete this item?')) return;
+/* DELETE */
+window.deleteItem = async function(id){
+  if(!confirm("Delete this item?")) return;
   await deleteDoc(doc(db,"foodItems",id));
   loadItems();
-}
+};
 
 loadItems();
 </script>
