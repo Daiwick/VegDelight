@@ -66,11 +66,9 @@ button{
 <input id="phoneNumber" required>
 
 <label>Delivery Address</label>
-<textarea id="deliveryAddress" placeholder="Address will auto-fill..." required></textarea>
+<textarea id="deliveryAddress" required></textarea>
 
-<button type="button" class="secondary-btn" onclick="useCurrentLocation()">
-📍 Use Current Location
-</button>
+
 
 <div id="map"></div>
 
@@ -113,7 +111,7 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-/* FIREBASE */
+/* Firebase */
 const firebaseConfig = {
   apiKey: "AIzaSyBXsEzzDtXO3nuNaCnqerAGEzrZqFVbB4U",
   authDomain: "dvegdelight.firebaseapp.com",
@@ -126,13 +124,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* STATE */
+/* Cart */
 let cart = [];
 
-/* INIT */
+/* Init */
 window.initCheckout = function () {
   const email = localStorage.getItem("userEmail");
-
   if (!email) {
     location.href = "login.html";
     return;
@@ -146,28 +143,34 @@ window.initCheckout = function () {
   }
 
   cart = JSON.parse(savedCart);
-  if (!Array.isArray(cart) || !cart.length) {
+
+  if (!Array.isArray(cart) || cart.length === 0) {
     alert("Your cart is empty");
     location.href = "customer.html";
     return;
   }
 
-  customerEmail.value = email;
+  document.getElementById("customerEmail").value = email;
   renderSummary();
 };
 
-/* SUMMARY */
+/* Render Summary (FIXED) */
 function renderSummary() {
-  summaryItems.innerHTML = "";
+  const list = document.getElementById("summaryItems");
+  list.innerHTML = "";
+
   let total = 0;
 
   cart.forEach(item => {
-    const qty = Number(item.qty || 0);
-    const price = Number(item.price || 0);
+    const price = Number(item.price);
+    const qty = Number(item.qty);
+
+    if (isNaN(price) || isNaN(qty)) return;
+
     const itemTotal = price * qty;
     total += itemTotal;
 
-    summaryItems.innerHTML += `
+    list.innerHTML += `
       <div class="summary-item">
         <div>
           <div class="item-name">${item.name}</div>
@@ -178,52 +181,47 @@ function renderSummary() {
     `;
   });
 
-  totalAmount.textContent = "₹" + total.toFixed(2);
+  document.getElementById("totalAmount").textContent =
+    "₹" + total.toFixed(2);
 }
 
-/* PLACE ORDER — ADMIN SAFE */
+/* Place Order (FIXED) */
 window.handleCheckout = async function (e) {
   e.preventDefault();
 
-  const items = cart.map(i => ({
-    name: i.name,
-    price: Number(i.price || 0),
-    quantity: Number(i.qty || 0)
-  }));
-
-  const totalAmountValue = items.reduce(
-    (sum, i) => sum + i.price * i.quantity,
+  const totalAmount = cart.reduce(
+    (sum, i) => sum + Number(i.price) * Number(i.qty),
     0
   );
 
   const order = {
+    status: "pending",
+    created_at: serverTimestamp(),
     customer_name: customerName.value,
     customer_email: customerEmail.value,
     phone_number: phoneNumber.value,
     delivery_address: deliveryAddress.value,
-
-    items: items,
-    total_amount: totalAmountValue,
+    total_amount: totalAmount,
     currency: "INR",
-
-    status: "pending",
-    created_at: serverTimestamp()
+    order_items: cart.map(i => ({
+      name: i.name,
+      price: Number(i.price),
+      quantity: Number(i.qty)
+    }))
   };
 
   const ref = await addDoc(collection(db, "orders"), order);
 
   localStorage.removeItem("cart");
 
-  orderId.textContent = ref.id;
-  formContainer.classList.add("hide");
-  successMessage.classList.add("show");
+  document.getElementById("orderId").textContent = ref.id;
+  document.getElementById("formContainer").classList.add("hide");
+  document.getElementById("successMessage").classList.add("show");
 };
 
-/* NAV */
+/* Nav */
 window.goBack = () => location.href = "customer.html";
 window.goToMenu = () => location.href = "customer.html";
 </script>
-
-
 </body>
 </html>
